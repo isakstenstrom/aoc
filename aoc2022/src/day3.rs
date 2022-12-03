@@ -1,8 +1,6 @@
-use std::{
-    collections::HashSet,
-    fs::File,
-    io::{self, BufRead},
-};
+use std::collections::HashSet;
+
+use crate::util::read_lines_from_input;
 
 fn char_to_score(c: &char) -> u32 {
     let tmp = *c as u32;
@@ -14,9 +12,7 @@ fn char_to_score(c: &char) -> u32 {
 
 // Answer should be "8176"
 pub fn run1() {
-    let file = File::open("res/input/day3_1.txt").expect("Error: input file does not exist");
-    let lines = io::BufReader::new(file).lines();
-
+    let lines = read_lines_from_input("day3.txt");
     let mut sum: u32 = 0;
     for line in lines.flatten() {
         let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
@@ -31,8 +27,7 @@ pub fn run1() {
 
 // Answer should be "2689"
 pub fn run2() {
-    let file = File::open("res/input/day3_1.txt").expect("Error: input file does not exist");
-    let lines = io::BufReader::new(file).lines();
+    let lines = read_lines_from_input("day3.txt");
 
     let mut sum: u32 = 0;
     let mut line_iter = lines.flatten().peekable();

@@ -1,7 +1,4 @@
-use std::{
-    fs::File,
-    io::{self, BufRead},
-};
+use crate::util::read_lines_from_input;
 
 #[derive(PartialEq)]
 enum Move {
@@ -39,8 +36,7 @@ fn translate_to_game_result(input: char) -> GameResult {
 
 // Answer should be "15523"
 pub fn run1() {
-    let file = File::open("res/input/day2_1.txt").expect("Error: input file does not exist");
-    let lines = io::BufReader::new(file).lines();
+    let lines = read_lines_from_input("day2.txt");
 
     let mut score = 0;
     for line in lines.flatten() {
@@ -67,8 +63,7 @@ pub fn run1() {
 
 // Answer should be "15702"
 pub fn run2() {
-    let file = File::open("res/input/day2_1.txt").expect("Error: input file does not exist");
-    let lines = io::BufReader::new(file).lines();
+    let lines = read_lines_from_input("day2.txt");
 
     let mut score = 0;
     for line in lines.flatten() {

@@ -1,12 +1,9 @@
-use std::{
-    fs::File,
-    io::{self, BufRead},
-};
+use crate::util::read_lines_from_input;
 
 // Answer should be "69281"
 pub fn run1() {
-    let file = File::open("res/input/day1_1.txt").expect("Error: input file does not exist");
-    let lines = io::BufReader::new(file).lines();
+    let lines = read_lines_from_input("day1.txt");
+
     let mut max_calories = 0;
     let mut calorie_counter = 0;
     for line in lines.flatten() {
@@ -23,8 +20,8 @@ pub fn run1() {
 
 // Answer should be "201524"
 pub fn run2() {
-    let file = File::open("res/input/day1_1.txt").expect("Error: input file does not exist");
-    let lines = io::BufReader::new(file).lines();
+    let lines = read_lines_from_input("day1.txt");
+
     let mut max_calories1 = 0;
     let mut max_calories2 = 0;
     let mut max_calories3 = 0;
