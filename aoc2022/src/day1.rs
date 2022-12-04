@@ -6,12 +6,12 @@ pub fn run1() {
 
     let mut max_calories = 0;
     let mut calorie_counter = 0;
-    for line in lines.flatten() {
+    for line in lines.iter() {
         if line.is_empty() {
             max_calories = std::cmp::max(max_calories, calorie_counter);
             calorie_counter = 0;
         } else {
-            calorie_counter += str::parse::<i32>(&line).expect("Invalid calorie in the file.");
+            calorie_counter += str::parse::<i32>(line).expect("Invalid calorie in the file.");
         }
     }
     max_calories = std::cmp::max(max_calories, calorie_counter);
@@ -26,7 +26,7 @@ pub fn run2() {
     let mut max_calories2 = 0;
     let mut max_calories3 = 0;
     let mut calorie_counter = 0;
-    for line in lines.flatten() {
+    for line in lines.iter() {
         if line.is_empty() {
             if calorie_counter > max_calories1 {
                 max_calories1 = calorie_counter;
@@ -37,7 +37,7 @@ pub fn run2() {
             }
             calorie_counter = 0;
         } else {
-            calorie_counter += str::parse::<i32>(&line).expect("Invalid calorie in the file.");
+            calorie_counter += str::parse::<i32>(line).expect("Invalid calorie in the file.");
         }
     }
     if calorie_counter > max_calories1 {

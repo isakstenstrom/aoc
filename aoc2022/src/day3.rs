@@ -14,7 +14,7 @@ fn char_to_score(c: &char) -> u32 {
 pub fn run1() {
     let lines = read_lines_from_input("day3.txt");
     let mut sum: u32 = 0;
-    for line in lines.flatten() {
+    for line in lines.iter() {
         let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
         let h2: HashSet<char> = line[(line.len() / 2)..].chars().into_iter().collect();
 
@@ -30,7 +30,7 @@ pub fn run2() {
     let lines = read_lines_from_input("day3.txt");
 
     let mut sum: u32 = 0;
-    let mut line_iter = lines.flatten().peekable();
+    let mut line_iter = lines.iter().peekable();
 
     while line_iter.peek().is_some() {
         let h1: HashSet<char> = line_iter.next().unwrap().chars().into_iter().collect();

@@ -30,9 +30,8 @@ pub fn run1() {
     println!(
         "{}",
         lines
-            .flatten()
-            .into_iter()
-            .map(|l| ElfPair::from_string(&l))
+            .iter()
+            .map(|l| ElfPair::from_string(l))
             .filter(|p| p.fully_contains())
             .count()
     );
@@ -44,9 +43,8 @@ pub fn run2() {
     println!(
         "{}",
         lines
-            .flatten()
-            .into_iter()
-            .map(|l| ElfPair::from_string(&l))
+            .iter()
+            .map(|l| ElfPair::from_string(l))
             .filter(|p| p.partly_contains())
             .count()
     );

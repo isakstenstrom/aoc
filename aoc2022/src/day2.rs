@@ -81,7 +81,7 @@ pub fn run1() {
     let lines = read_lines_from_input("day2.txt");
 
     let mut score = 0;
-    for line in lines.flatten() {
+    for line in lines.iter() {
         let p1 = Move::from_char(&line.chars().next().expect("Invalid input in file"));
         let p2 = Move::from_char(&line.chars().nth(2).expect("Invalid input in file"));
 
@@ -96,7 +96,7 @@ pub fn run2() {
     let lines = read_lines_from_input("day2.txt");
 
     let mut score = 0;
-    for line in lines.flatten() {
+    for line in lines.iter() {
         let p1 = Move::from_char(&line.chars().next().expect("Invalid input in file"));
         let game_result =
             GameResult::from_char(&line.chars().nth(2).expect("Invalid input in file"));
