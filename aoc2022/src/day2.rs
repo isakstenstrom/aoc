@@ -6,31 +6,73 @@ enum Move {
     Paper,
     Scissors,
 }
+impl Move {
+    fn from_char(c: &char) -> Move {
+        match c {
+            'A' => Move::Rock,
+            'B' => Move::Paper,
+            'C' => Move::Scissors,
+            'X' => Move::Rock,
+            'Y' => Move::Paper,
+            'Z' => Move::Scissors,
+            _ => panic!("Invalid input: Move not in list"),
+        }
+    }
+
+    fn to_score(&self) -> u32 {
+        match self {
+            Move::Rock => 1,
+            Move::Paper => 2,
+            Move::Scissors => 3,
+        }
+    }
+
+    fn get_result(&self, other: &Move) -> GameResult {
+        if self == other {
+            return GameResult::Draw;
+        } else if (self == &Move::Paper && other == &Move::Rock)
+            || (self == &Move::Scissors && other == &Move::Paper)
+            || (self == &Move::Rock && other == &Move::Scissors)
+        {
+            return GameResult::Win;
+        }
+        GameResult::Lose
+    }
+
+    fn get_opposing_move(&self, game_result: &GameResult) -> &Move {
+        match (game_result, self) {
+            (GameResult::Win, Move::Rock) => &Move::Paper,
+            (GameResult::Win, Move::Paper) => &Move::Scissors,
+            (GameResult::Win, Move::Scissors) => &Move::Rock,
+            (GameResult::Lose, Move::Rock) => &Move::Scissors,
+            (GameResult::Lose, Move::Paper) => &Move::Rock,
+            (GameResult::Lose, Move::Scissors) => &Move::Paper,
+            _ => self,
+        }
+    }
+}
 
 enum GameResult {
     Win,
     Draw,
     Lose,
 }
-
-fn translate_to_move(input: char) -> Move {
-    match input {
-        'A' => Move::Rock,
-        'B' => Move::Paper,
-        'C' => Move::Scissors,
-        'X' => Move::Rock,
-        'Y' => Move::Paper,
-        'Z' => Move::Scissors,
-        _ => panic!("Invalid input: Move not in list"),
+impl GameResult {
+    fn from_char(c: &char) -> GameResult {
+        match c {
+            'X' => GameResult::Lose,
+            'Y' => GameResult::Draw,
+            'Z' => GameResult::Win,
+            _ => panic!("Invalid input: Move not in list"),
+        }
     }
-}
 
-fn translate_to_game_result(input: char) -> GameResult {
-    match input {
-        'X' => GameResult::Lose,
-        'Y' => GameResult::Draw,
-        'Z' => GameResult::Win,
-        _ => panic!("Invalid input: Move not in list"),
+    fn to_score(&self) -> u32 {
+        match self {
+            GameResult::Lose => 0,
+            GameResult::Draw => 3,
+            GameResult::Win => 6,
+        }
     }
 }
 
@@ -40,23 +82,11 @@ pub fn run1() {
 
     let mut score = 0;
     for line in lines.flatten() {
-        let p1 = translate_to_move(line.chars().next().expect("Invalid input in file"));
-        let p2 = translate_to_move(line.chars().nth(2).expect("Invalid input in file"));
+        let p1 = Move::from_char(&line.chars().next().expect("Invalid input in file"));
+        let p2 = Move::from_char(&line.chars().nth(2).expect("Invalid input in file"));
 
-        match p2 {
-            Move::Rock => score += 1,
-            Move::Paper => score += 2,
-            Move::Scissors => score += 3,
-        }
-
-        if p1 == p2 {
-            score += 3;
-        } else if (p1 == Move::Rock && p2 == Move::Paper)
-            || (p1 == Move::Paper && p2 == Move::Scissors)
-            || (p1 == Move::Scissors && p2 == Move::Rock)
-        {
-            score += 6;
-        }
+        score += p2.to_score();
+        score += p2.get_result(&p1).to_score();
     }
     println!("{}", score);
 }
@@ -67,33 +97,14 @@ pub fn run2() {
 
     let mut score = 0;
     for line in lines.flatten() {
-        let p1 = translate_to_move(line.chars().next().expect("Invalid input in file"));
+        let p1 = Move::from_char(&line.chars().next().expect("Invalid input in file"));
         let game_result =
-            translate_to_game_result(line.chars().nth(2).expect("Invalid input in file"));
+            GameResult::from_char(&line.chars().nth(2).expect("Invalid input in file"));
 
-        let p2 = match (&p1, &game_result) {
-            (Move::Rock, GameResult::Lose) => Move::Scissors,
-            (Move::Rock, GameResult::Draw) => Move::Rock,
-            (Move::Rock, GameResult::Win) => Move::Paper,
-            (Move::Paper, GameResult::Lose) => Move::Rock,
-            (Move::Paper, GameResult::Draw) => Move::Paper,
-            (Move::Paper, GameResult::Win) => Move::Scissors,
-            (Move::Scissors, GameResult::Lose) => Move::Paper,
-            (Move::Scissors, GameResult::Draw) => Move::Scissors,
-            (Move::Scissors, GameResult::Win) => Move::Rock,
-        };
+        let p2 = p1.get_opposing_move(&game_result);
 
-        match p2 {
-            Move::Rock => score += 1,
-            Move::Paper => score += 2,
-            Move::Scissors => score += 3,
-        }
-
-        match game_result {
-            GameResult::Lose => score += 0,
-            GameResult::Draw => score += 3,
-            GameResult::Win => score += 6,
-        }
+        score += p2.to_score();
+        score += game_result.to_score();
     }
     println!("{}", score);
 }
