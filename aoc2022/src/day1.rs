@@ -1,51 +1,43 @@
-use crate::util::read_lines_from_input;
+use crate::util::read_input_as_string;
 
 // Answer should be "69281"
 pub fn task1() {
-    let lines = read_lines_from_input("day1.txt");
-
-    let mut max_calories = 0;
-    let mut calorie_counter = 0;
-    for line in lines.iter() {
-        if line.is_empty() {
-            max_calories = std::cmp::max(max_calories, calorie_counter);
-            calorie_counter = 0;
-        } else {
-            calorie_counter += str::parse::<i32>(line).expect("Invalid calorie in the file.");
-        }
-    }
-    max_calories = std::cmp::max(max_calories, calorie_counter);
-    println!("{max_calories}");
+    let input = read_input_as_string("day1.txt");
+    println!(
+        "{}",
+        input
+            .split("\n\n")
+            .map(|l| {
+                l.split('\n')
+                    .map(|c| c.parse::<u32>().unwrap())
+                    .sum::<u32>()
+            })
+            .max()
+            .unwrap()
+    );
 }
 
 // Answer should be "201524"
 pub fn task2() {
-    let lines = read_lines_from_input("day1.txt");
-
-    let mut max_calories1 = 0;
-    let mut max_calories2 = 0;
-    let mut max_calories3 = 0;
-    let mut calorie_counter = 0;
-    for line in lines.iter() {
-        if line.is_empty() {
-            if calorie_counter > max_calories1 {
-                max_calories1 = calorie_counter;
-            } else if calorie_counter > max_calories2 {
-                max_calories2 = calorie_counter;
-            } else if calorie_counter > max_calories3 {
-                max_calories3 = calorie_counter;
+    let input = read_input_as_string("day1.txt");
+    let mut max1: u32 = 0;
+    let mut max2: u32 = 0;
+    let mut max3: u32 = 0;
+    input
+        .split("\n\n")
+        .map(|l| {
+            l.split('\n')
+                .map(|c| c.parse::<u32>().unwrap())
+                .sum::<u32>()
+        })
+        .for_each(|c| {
+            if c > max1 {
+                max1 = c;
+            } else if c > max2 {
+                max2 = c;
+            } else if c > max3 {
+                max3 = c;
             }
-            calorie_counter = 0;
-        } else {
-            calorie_counter += str::parse::<i32>(line).expect("Invalid calorie in the file.");
-        }
-    }
-    if calorie_counter > max_calories1 {
-        max_calories1 = calorie_counter;
-    } else if calorie_counter > max_calories2 {
-        max_calories2 = calorie_counter;
-    } else if calorie_counter > max_calories3 {
-        max_calories3 = calorie_counter;
-    }
-    println!("{}", max_calories1 + max_calories2 + max_calories3);
+        });
+    println!("{}", max1 + max2 + max3);
 }

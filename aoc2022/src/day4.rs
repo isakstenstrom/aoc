@@ -1,4 +1,4 @@
-use crate::util::read_lines_from_input;
+use crate::util::read_input_as_lines;
 
 struct ElfPair {
     first: (u32, u32),
@@ -26,7 +26,7 @@ impl ElfPair {
 
 // Answer should be "538"
 pub fn task1() {
-    let lines = read_lines_from_input("day4.txt");
+    let lines = read_input_as_lines("day4.txt");
     println!(
         "{}",
         lines
@@ -39,7 +39,7 @@ pub fn task1() {
 
 // Answer should be "792"
 pub fn task2() {
-    let lines = read_lines_from_input("day4.txt");
+    let lines = read_input_as_lines("day4.txt");
     println!(
         "{}",
         lines

@@ -1,4 +1,4 @@
-use crate::util::read_lines_from_input;
+use crate::util::read_input_as_lines;
 
 #[derive(PartialEq)]
 enum Move {
@@ -78,7 +78,7 @@ impl GameResult {
 
 // Answer should be "15523"
 pub fn task1() {
-    let lines = read_lines_from_input("day2.txt");
+    let lines = read_input_as_lines("day2.txt");
 
     let mut score = 0;
     for line in lines.iter() {
@@ -93,7 +93,7 @@ pub fn task1() {
 
 // Answer should be "15702"
 pub fn task2() {
-    let lines = read_lines_from_input("day2.txt");
+    let lines = read_input_as_lines("day2.txt");
 
     let mut score = 0;
     for line in lines.iter() {
