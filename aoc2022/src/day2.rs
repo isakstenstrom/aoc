@@ -77,7 +77,7 @@ impl GameResult {
 }
 
 // Answer should be "15523"
-pub fn run1() {
+pub fn task1() {
     let lines = read_lines_from_input("day2.txt");
 
     let mut score = 0;
@@ -92,7 +92,7 @@ pub fn run1() {
 }
 
 // Answer should be "15702"
-pub fn run2() {
+pub fn task2() {
     let lines = read_lines_from_input("day2.txt");
 
     let mut score = 0;

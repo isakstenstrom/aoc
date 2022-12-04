@@ -1,7 +1,7 @@
 use crate::util::read_lines_from_input;
 
 // Answer should be "69281"
-pub fn run1() {
+pub fn task1() {
     let lines = read_lines_from_input("day1.txt");
 
     let mut max_calories = 0;
@@ -19,7 +19,7 @@ pub fn run1() {
 }
 
 // Answer should be "201524"
-pub fn run2() {
+pub fn task2() {
     let lines = read_lines_from_input("day1.txt");
 
     let mut max_calories1 = 0;

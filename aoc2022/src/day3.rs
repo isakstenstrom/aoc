@@ -11,7 +11,7 @@ fn char_to_score(c: &char) -> u32 {
 }
 
 // Answer should be "8176"
-pub fn run1() {
+pub fn task1() {
     let lines = read_lines_from_input("day3.txt");
     let mut sum: u32 = 0;
     for line in lines.iter() {
@@ -26,7 +26,7 @@ pub fn run1() {
 }
 
 // Answer should be "2689"
-pub fn run2() {
+pub fn task2() {
     let lines = read_lines_from_input("day3.txt");
 
     let mut sum: u32 = 0;

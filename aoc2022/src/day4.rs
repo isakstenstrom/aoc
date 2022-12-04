@@ -25,7 +25,7 @@ impl ElfPair {
 }
 
 // Answer should be "538"
-pub fn run1() {
+pub fn task1() {
     let lines = read_lines_from_input("day4.txt");
     println!(
         "{}",
@@ -38,7 +38,7 @@ pub fn run1() {
 }
 
 // Answer should be "792"
-pub fn run2() {
+pub fn task2() {
     let lines = read_lines_from_input("day4.txt");
     println!(
         "{}",
