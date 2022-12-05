@@ -36,3 +36,18 @@ pub fn task2() -> u32 {
         });
     max1 + max2 + max3
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::day1::{task1, task2};
+
+    #[test]
+    fn test_task1() {
+        assert_eq!(task1(), 69281);
+    }
+
+    #[test]
+    fn test_task2() {
+        assert_eq!(task2(), 201524);
+    }
+}

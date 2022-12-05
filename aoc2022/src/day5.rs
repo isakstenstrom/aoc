@@ -86,3 +86,18 @@ pub fn task2() -> String {
     }
     stacks.iter().map(|s| s.back().unwrap()).collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::day5::{task1, task2};
+
+    #[test]
+    fn test_task1() {
+        assert_eq!(task1(), "RTGWZTHLD");
+    }
+
+    #[test]
+    fn test_task2() {
+        assert_eq!(task2(), "STHGRZZFR");
+    }
+}

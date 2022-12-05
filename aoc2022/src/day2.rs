@@ -103,3 +103,18 @@ pub fn task2() -> u32 {
         })
         .sum()
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::day2::{task1, task2};
+
+    #[test]
+    fn test_task1() {
+        assert_eq!(task1(), 15523);
+    }
+
+    #[test]
+    fn test_task2() {
+        assert_eq!(task2(), 15702);
+    }
+}
