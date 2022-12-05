@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use crate::util::read_input_as_lines;
 
 // Answer should be "RTGWZTHLD"
-pub fn task1() {
+pub fn task1() -> String {
     let lines = read_input_as_lines("day5.txt");
     let num_columns = (lines[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
@@ -21,7 +21,6 @@ pub fn task1() {
             .enumerate()
             .for_each(|(i, c)| {
                 if c != ' ' {
-                    // println!("Pushed {} on stack {}", c, i);
                     stacks[i].push_front(c);
                 }
             })
@@ -40,12 +39,11 @@ pub fn task1() {
             stacks[to].push_back(c);
         }
     }
-    stacks.iter().for_each(|s| print!("{}", s.back().unwrap()));
-    println!();
+    stacks.iter().map(|s| s.back().unwrap()).collect()
 }
 
-// Answer should be "792"
-pub fn task2() {
+// Answer should be "STHGRZZFR"
+pub fn task2() -> String {
     let lines = read_input_as_lines("day5.txt");
     let num_columns = (lines[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
@@ -63,7 +61,6 @@ pub fn task2() {
             .enumerate()
             .for_each(|(i, c)| {
                 if c != ' ' {
-                    // println!("Pushed {} on stack {}", c, i);
                     stacks[i].push_front(c);
                 }
             })
@@ -87,6 +84,5 @@ pub fn task2() {
             stacks[to].push_back(tmp.pop().unwrap());
         }
     }
-    stacks.iter().for_each(|s| print!("{}", s.back().unwrap()));
-    println!();
+    stacks.iter().map(|s| s.back().unwrap()).collect()
 }

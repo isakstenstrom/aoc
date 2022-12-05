@@ -77,34 +77,29 @@ impl GameResult {
 }
 
 // Answer should be "15523"
-pub fn task1() {
-    let lines = read_input_as_lines("day2.txt");
+pub fn task1() -> u32 {
+    read_input_as_lines("day2.txt")
+        .iter()
+        .map(|line| {
+            let p1 = Move::from_char(&line.chars().next().unwrap());
+            let p2 = Move::from_char(&line.chars().nth(2).unwrap());
 
-    let mut score = 0;
-    for line in lines.iter() {
-        let p1 = Move::from_char(&line.chars().next().expect("Invalid input in file"));
-        let p2 = Move::from_char(&line.chars().nth(2).expect("Invalid input in file"));
-
-        score += p2.to_score();
-        score += p2.get_result(&p1).to_score();
-    }
-    println!("{}", score);
+            p2.to_score() + p2.get_result(&p1).to_score()
+            // score += p2.to_score();
+            // score += p2.get_result(&p1).to_score();
+        })
+        .sum()
 }
 
 // Answer should be "15702"
-pub fn task2() {
-    let lines = read_input_as_lines("day2.txt");
+pub fn task2() -> u32 {
+    read_input_as_lines("day2.txt")
+        .iter()
+        .map(|line| {
+            let p1 = Move::from_char(&line.chars().next().unwrap());
+            let game_result = GameResult::from_char(&line.chars().nth(2).unwrap());
 
-    let mut score = 0;
-    for line in lines.iter() {
-        let p1 = Move::from_char(&line.chars().next().expect("Invalid input in file"));
-        let game_result =
-            GameResult::from_char(&line.chars().nth(2).expect("Invalid input in file"));
-
-        let p2 = p1.get_opposing_move(&game_result);
-
-        score += p2.to_score();
-        score += game_result.to_score();
-    }
-    println!("{}", score);
+            p1.get_opposing_move(&game_result).to_score() + game_result.to_score()
+        })
+        .sum()
 }

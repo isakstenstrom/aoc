@@ -11,35 +11,32 @@ fn char_to_score(c: &char) -> u32 {
 }
 
 // Answer should be "8176"
-pub fn task1() {
-    let lines = read_input_as_lines("day3.txt");
+pub fn task1() -> u32 {
+    read_input_as_lines("day3.txt")
+        .iter()
+        .map(|line| {
+            let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
+            let h2: HashSet<char> = line[(line.len() / 2)..].chars().into_iter().collect();
 
-    let mut sum: u32 = 0;
-    for line in lines.iter() {
-        let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
-        let h2: HashSet<char> = line[(line.len() / 2)..].chars().into_iter().collect();
-
-        sum += h1.intersection(&h2).map(char_to_score).sum::<u32>();
-    }
-    println!("{}", sum);
+            h1.intersection(&h2).map(char_to_score).sum::<u32>()
+        })
+        .sum()
 }
 
 // Answer should be "2689"
-pub fn task2() {
-    let lines = read_input_as_lines("day3.txt");
+pub fn task2() -> u32 {
+    read_input_as_lines("day3.txt")
+        .chunks(3)
+        .map(|lines| {
+            let h1: HashSet<char> = lines[0].chars().into_iter().collect();
+            let h2: HashSet<char> = lines[1].chars().into_iter().collect();
+            let h3: HashSet<char> = lines[2].chars().into_iter().collect();
 
-    let mut sum: u32 = 0;
-    for line_chunk in lines.chunks(3) {
-        let h1: HashSet<char> = line_chunk[0].chars().into_iter().collect();
-        let h2: HashSet<char> = line_chunk[1].chars().into_iter().collect();
-        let h3: HashSet<char> = line_chunk[2].chars().into_iter().collect();
-
-        sum += h1
-            .iter()
-            .filter(|c| h2.contains(c))
-            .filter(|c| h3.contains(c))
-            .map(char_to_score)
-            .sum::<u32>();
-    }
-    println!("{}", sum);
+            h1.iter()
+                .filter(|c| h2.contains(c))
+                .filter(|c| h3.contains(c))
+                .map(char_to_score)
+                .sum::<u32>()
+        })
+        .sum()
 }

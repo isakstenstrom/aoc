@@ -1,29 +1,24 @@
 use crate::util::read_input_as_string;
 
 // Answer should be "69281"
-pub fn task1() {
-    let input = read_input_as_string("day1.txt");
-    println!(
-        "{}",
-        input
-            .split("\n\n")
-            .map(|l| {
-                l.split('\n')
-                    .map(|c| c.parse::<u32>().unwrap())
-                    .sum::<u32>()
-            })
-            .max()
-            .unwrap()
-    );
+pub fn task1() -> u32 {
+    read_input_as_string("day1.txt")
+        .split("\n\n")
+        .map(|l| {
+            l.split('\n')
+                .map(|c| c.parse::<u32>().unwrap())
+                .sum::<u32>()
+        })
+        .max()
+        .unwrap()
 }
 
 // Answer should be "201524"
-pub fn task2() {
-    let input = read_input_as_string("day1.txt");
+pub fn task2() -> u32 {
     let mut max1: u32 = 0;
     let mut max2: u32 = 0;
     let mut max3: u32 = 0;
-    input
+    read_input_as_string("day1.txt")
         .split("\n\n")
         .map(|l| {
             l.split('\n')
@@ -39,5 +34,5 @@ pub fn task2() {
                 max3 = c;
             }
         });
-    println!("{}", max1 + max2 + max3);
+    max1 + max2 + max3
 }
