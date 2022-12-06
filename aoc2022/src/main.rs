@@ -3,6 +3,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 mod util;
 
 fn main() {
@@ -19,6 +20,8 @@ fn main() {
         "4_2" => println!("{}", day4::task2()),
         "5_1" => println!("{}", day5::task1()),
         "5_2" => println!("{}", day5::task2()),
+        "6_1" => println!("{}", day6::task1()),
+        "6_2" => println!("{}", day6::task2()),
         _ => println!("Day not implemented yet."),
     };
 }
