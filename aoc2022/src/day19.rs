@@ -1,6 +1,11 @@
-use std::cmp;
+use std::{
+    cmp,
+    thread::{self, JoinHandle},
+};
 
 use crate::util::read_input_as_lines;
+
+const DEBUG_PRINT: bool = false;
 
 #[derive(Debug, Clone)]
 struct Resources {
@@ -42,7 +47,7 @@ impl Resources {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct BlueprintCosts {
     ore: Resources,
     clay: Resources,
@@ -76,23 +81,29 @@ fn heuristic(state: &SearchState) -> usize {
             / 2
 }
 
-fn heuristic2(state: &SearchState, costs: &BlueprintCosts) -> usize {
+fn heuristic2(state: &SearchState, blueprint_costs: &BlueprintCosts) -> usize {
     let mut res = state.resources.clone();
     let mut old_production = state.production.clone();
     let mut new_production = state.production.clone();
-    res.ore = usize::MAX;
-    old_production.ore = 0;
-    new_production.ore = 0;
+    let mut costs = blueprint_costs.clone();
+    costs.obsidian.ore = 0;
+    costs.geode.ore = 0;
 
     for _ in (1..=state.time).rev() {
+        if res.affordable(&costs.ore) {
+            new_production.ore += 1;
+        }
         if res.affordable(&costs.clay) {
             new_production.clay += 1;
+            res.sub(&costs.clay);
         }
         if res.affordable(&costs.obsidian) {
             new_production.obsidian += 1;
+            res.sub(&costs.obsidian);
         }
         if res.affordable(&costs.geode) {
             new_production.geode += 1;
+            res.sub(&costs.geode);
         }
         res.add(&old_production);
         old_production = new_production.clone();
@@ -101,95 +112,106 @@ fn heuristic2(state: &SearchState, costs: &BlueprintCosts) -> usize {
 }
 
 fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) -> Vec<usize> {
-    let mut result: Vec<usize> = Vec::new();
+    let mut threads: Vec<JoinHandle<usize>> = Vec::new();
 
-    for (i, costs) in blueprints.iter().enumerate() {
-        let max_costs = Resources {
-            ore: cmp::max(
-                cmp::max(costs.ore.ore, costs.clay.ore),
-                cmp::max(costs.obsidian.ore, costs.geode.ore),
-            ),
-            clay: costs.obsidian.clay,
-            obsidian: costs.geode.obsidian,
-            geode: 0,
-        };
-
-        let mut max_score: usize = 0;
-        let mut stack: Vec<SearchState> = Vec::new();
-        stack.push(SearchState {
-            time: num_minutes,
-            resources: Resources::new(),
-            production: Resources {
-                ore: 1,
-                clay: 0,
-                obsidian: 0,
+    for (i, blueprint) in blueprints.iter().enumerate() {
+        let costs = blueprint.clone();
+        threads.push(thread::spawn(move || {
+            let max_costs = Resources {
+                ore: cmp::max(
+                    cmp::max(costs.ore.ore, costs.clay.ore),
+                    cmp::max(costs.obsidian.ore, costs.geode.ore),
+                ),
+                clay: costs.obsidian.clay,
+                obsidian: costs.geode.obsidian,
                 geode: 0,
-            },
-        });
+            };
 
-        while !stack.is_empty() {
-            let state = stack.pop().unwrap();
-            if state.time == 1 {
-                max_score = cmp::max(
-                    max_score,
-                    state.resources.geode + state.production.geode as usize,
-                );
-                continue;
-            }
+            let mut max_score: usize = 0;
+            let mut stack: Vec<SearchState> = Vec::new();
+            stack.push(SearchState {
+                time: num_minutes,
+                resources: Resources::new(),
+                production: Resources {
+                    ore: 1,
+                    clay: 0,
+                    obsidian: 0,
+                    geode: 0,
+                },
+            });
 
-            if heuristic2(&state, costs) <= max_score {
-                continue;
-            }
+            while !stack.is_empty() {
+                let state = stack.pop().unwrap();
+                if state.time == 1 {
+                    max_score = cmp::max(
+                        max_score,
+                        state.resources.geode + state.production.geode as usize,
+                    );
+                    continue;
+                }
 
-            let mut new_state = state.clone();
-            new_state.resources.add(&new_state.production);
-            new_state.time -= 1;
-            stack.push(new_state);
+                if heuristic2(&state, &costs) <= max_score {
+                    continue;
+                }
 
-            if state.time >= 4 + costs.ore.ore
-                && state.production.ore < max_costs.ore
-                && state.resources.affordable(&costs.ore)
-            {
                 let mut new_state = state.clone();
-                new_state.resources.sub(&costs.ore);
                 new_state.resources.add(&new_state.production);
-                new_state.production.ore += 1;
                 new_state.time -= 1;
                 stack.push(new_state);
+
+                if state.time >= 4 + costs.ore.ore
+                    && state.production.ore < max_costs.ore
+                    && state.resources.affordable(&costs.ore)
+                {
+                    let mut new_state = state.clone();
+                    new_state.resources.sub(&costs.ore);
+                    new_state.resources.add(&new_state.production);
+                    new_state.production.ore += 1;
+                    new_state.time -= 1;
+                    stack.push(new_state);
+                }
+                if state.time >= 6
+                    && state.production.clay < max_costs.clay
+                    && state.resources.affordable(&costs.clay)
+                {
+                    let mut new_state = state.clone();
+                    new_state.resources.sub(&costs.clay);
+                    new_state.resources.add(&new_state.production);
+                    new_state.production.clay += 1;
+                    new_state.time -= 1;
+                    stack.push(new_state);
+                }
+                if state.time >= 4
+                    && state.production.obsidian < max_costs.obsidian
+                    && state.resources.affordable(&costs.obsidian)
+                {
+                    let mut new_state = state.clone();
+                    new_state.resources.sub(&costs.obsidian);
+                    new_state.resources.add(&new_state.production);
+                    new_state.production.obsidian += 1;
+                    new_state.time -= 1;
+                    stack.push(new_state);
+                }
+                if state.resources.affordable(&costs.geode) {
+                    let mut new_state = state.clone();
+                    new_state.resources.sub(&costs.geode);
+                    new_state.resources.add(&new_state.production);
+                    new_state.production.geode += 1;
+                    new_state.time -= 1;
+                    stack.push(new_state);
+                }
             }
-            if state.time >= 6
-                && state.production.clay < max_costs.clay
-                && state.resources.affordable(&costs.clay)
-            {
-                let mut new_state = state.clone();
-                new_state.resources.sub(&costs.clay);
-                new_state.resources.add(&new_state.production);
-                new_state.production.clay += 1;
-                new_state.time -= 1;
-                stack.push(new_state);
+            if DEBUG_PRINT {
+                println!("Max score of iter {} is {}", i + 1, max_score);
             }
-            if state.time >= 4
-                && state.production.obsidian < max_costs.obsidian
-                && state.resources.affordable(&costs.obsidian)
-            {
-                let mut new_state = state.clone();
-                new_state.resources.sub(&costs.obsidian);
-                new_state.resources.add(&new_state.production);
-                new_state.production.obsidian += 1;
-                new_state.time -= 1;
-                stack.push(new_state);
-            }
-            if state.resources.affordable(&costs.geode) {
-                let mut new_state = state.clone();
-                new_state.resources.sub(&costs.geode);
-                new_state.resources.add(&new_state.production);
-                new_state.production.geode += 1;
-                new_state.time -= 1;
-                stack.push(new_state);
-            }
-        }
-        println!("Max score of iter {} is {}", i + 1, max_score);
-        result.push(max_score);
+
+            max_score
+        }));
+    }
+
+    let mut result: Vec<usize> = Vec::new();
+    for thread in threads {
+        result.push(thread.join().unwrap());
     }
     result
 }
