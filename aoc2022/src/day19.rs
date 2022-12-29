@@ -4,10 +4,10 @@ use crate::util::read_input_as_lines;
 
 #[derive(Debug, Clone)]
 struct Resources {
-    ore: u32,
-    clay: u32,
-    obsidian: u32,
-    geode: u32,
+    ore: usize,
+    clay: usize,
+    obsidian: usize,
+    geode: usize,
 }
 
 impl Resources {
@@ -63,12 +63,12 @@ impl BlueprintCosts {
 
 #[derive(Debug, Clone)]
 struct SearchState {
-    time: u32,
+    time: usize,
     resources: Resources,
     production: Resources,
 }
 
-fn heuristic(state: &SearchState) -> u32 {
+fn heuristic(state: &SearchState) -> usize {
     let current_production = state.production.geode;
     let ending_production = state.production.geode + (state.time - 1);
     state.resources.geode
@@ -76,22 +76,34 @@ fn heuristic(state: &SearchState) -> u32 {
             / 2
 }
 
-pub fn task1() -> u32 {
-    let lines = read_input_as_lines("day19.txt");
+fn heuristic2(state: &SearchState, costs: &BlueprintCosts) -> usize {
+    let mut res = state.resources.clone();
+    let mut old_production = state.production.clone();
+    let mut new_production = state.production.clone();
+    res.ore = usize::MAX;
+    old_production.ore = 0;
+    new_production.ore = 0;
 
-    let mut result: u32 = 0;
-    for (i, line) in lines.iter().enumerate() {
-        let mut split_line = line.split(' ');
+    for _ in (1..=state.time).rev() {
+        if res.affordable(&costs.clay) {
+            new_production.clay += 1;
+        }
+        if res.affordable(&costs.obsidian) {
+            new_production.obsidian += 1;
+        }
+        if res.affordable(&costs.geode) {
+            new_production.geode += 1;
+        }
+        res.add(&old_production);
+        old_production = new_production.clone();
+    }
+    res.geode
+}
 
-        let mut costs = BlueprintCosts::new();
+fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) -> Vec<usize> {
+    let mut result: Vec<usize> = Vec::new();
 
-        costs.ore.ore = str::parse::<u32>(split_line.nth(6).unwrap()).unwrap();
-        costs.clay.ore = str::parse::<u32>(split_line.nth(5).unwrap()).unwrap();
-        costs.obsidian.ore = str::parse::<u32>(split_line.nth(5).unwrap()).unwrap();
-        costs.obsidian.clay = str::parse::<u32>(split_line.nth(2).unwrap()).unwrap();
-        costs.geode.ore = str::parse::<u32>(split_line.nth(5).unwrap()).unwrap();
-        costs.geode.obsidian = str::parse::<u32>(split_line.nth(2).unwrap()).unwrap();
-
+    for (i, costs) in blueprints.iter().enumerate() {
         let max_costs = Resources {
             ore: cmp::max(
                 cmp::max(costs.ore.ore, costs.clay.ore),
@@ -102,10 +114,10 @@ pub fn task1() -> u32 {
             geode: 0,
         };
 
-        let mut max_score: u32 = 0;
+        let mut max_score: usize = 0;
         let mut stack: Vec<SearchState> = Vec::new();
         stack.push(SearchState {
-            time: 24,
+            time: num_minutes,
             resources: Resources::new(),
             production: Resources {
                 ore: 1,
@@ -114,14 +126,18 @@ pub fn task1() -> u32 {
                 geode: 0,
             },
         });
+
         while !stack.is_empty() {
             let state = stack.pop().unwrap();
             if state.time == 1 {
-                max_score = cmp::max(max_score, state.resources.geode + state.production.geode);
+                max_score = cmp::max(
+                    max_score,
+                    state.resources.geode + state.production.geode as usize,
+                );
                 continue;
             }
 
-            if heuristic(&state) <= max_score {
+            if heuristic2(&state, costs) <= max_score {
                 continue;
             }
 
@@ -173,15 +189,53 @@ pub fn task1() -> u32 {
             }
         }
         println!("Max score of iter {} is {}", i + 1, max_score);
-        result += (u32::try_from(i).unwrap() + 1) * max_score;
+        result.push(max_score);
     }
     result
 }
 
-pub fn task2() -> u32 {
-    let lines = read_input_as_lines("day19.txt");
+fn parse_blueprints(filename: &str) -> Vec<BlueprintCosts> {
+    let lines = read_input_as_lines(filename);
+    let mut result: Vec<BlueprintCosts> = Vec::new();
 
-    1337
+    for line in lines.iter() {
+        let mut split_line = line.split(' ');
+
+        let mut costs = BlueprintCosts::new();
+        costs.ore.ore = str::parse::<usize>(split_line.nth(6).unwrap()).unwrap();
+        costs.clay.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
+        costs.obsidian.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
+        costs.obsidian.clay = str::parse::<usize>(split_line.nth(2).unwrap()).unwrap();
+        costs.geode.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
+        costs.geode.obsidian = str::parse::<usize>(split_line.nth(2).unwrap()).unwrap();
+
+        result.push(costs);
+    }
+    result
+}
+
+fn solve(filename: &str, num_blueprints: isize, num_minutes: usize) -> Vec<usize> {
+    let blueprints = parse_blueprints(filename);
+    if num_blueprints == -1 {
+        simulate_robot_production(&blueprints, num_minutes)
+    } else {
+        simulate_robot_production(&blueprints[..(num_blueprints as usize)], num_minutes)
+    }
+}
+
+pub fn task1() -> usize {
+    let scores = solve("day19.txt", -1, 24);
+
+    scores
+        .into_iter()
+        .enumerate()
+        .map(|(i, score)| (i + 1) * score)
+        .sum()
+}
+
+pub fn task2() -> usize {
+    let scores = solve("day19.txt", 3, 32);
+    scores.into_iter().reduce(|res, score| res * score).unwrap()
 }
 
 #[cfg(test)]
@@ -225,13 +279,13 @@ mod tests {
         assert_eq!(heuristic(&state), 8 + 3 + 4 + 5 + 6);
     }
 
-    // #[test]
-    // fn test_task1() {
-    //     assert_eq!(task1(), 1644735);
-    // }
+    #[test]
+    fn test_task1() {
+        assert_eq!(task1(), 1365);
+    }
 
-    // #[test]
-    // fn test_task2() {
-    //     assert_eq!(task2(), 1300850);
-    // }
+    #[test]
+    fn test_task2() {
+        assert_eq!(task2(), 4864);
+    }
 }
