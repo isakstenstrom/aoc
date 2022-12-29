@@ -75,25 +75,8 @@ impl Rope {
 
         for knot in self.knots[1..].iter_mut() {
             if knot.distance_to(&preceding_knot) > 1 {
-                if preceding_knot.x == knot.x {
-                    knot.y += (preceding_knot.y - knot.y).signum();
-                } else if preceding_knot.y == knot.y {
-                    knot.x += (preceding_knot.x - knot.x).signum();
-                } else {
-                    for neighbor in [
-                        Point { x: -1, y: -1 },
-                        Point { x: 1, y: -1 },
-                        Point { x: -1, y: 1 },
-                        Point { x: 1, y: 1 },
-                    ] {
-                        let mut diagonal = knot.clone();
-                        diagonal.add(&neighbor);
-                        if preceding_knot.distance_to(&diagonal) <= 1 {
-                            *knot = diagonal;
-                            break;
-                        }
-                    }
-                }
+                knot.y += (preceding_knot.y - knot.y).signum();
+                knot.x += (preceding_knot.x - knot.x).signum();
             }
             preceding_knot = knot.clone();
         }
@@ -138,8 +121,8 @@ impl Rope {
 }
 
 fn simulate_rope(rope_length: usize) -> usize {
-    let mut visited_points: HashSet<Point> = HashSet::new();
     let mut rope = Rope::new(rope_length);
+    let mut visited_points: HashSet<Point> = HashSet::new();
     visited_points.insert(rope.get_tail().clone());
 
     read_input_as_lines("day9.txt").iter().for_each(|line| {
