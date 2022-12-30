@@ -1,5 +1,6 @@
 use std::{
     cmp,
+    ops::{AddAssign, SubAssign},
     thread::{self, JoinHandle},
 };
 
@@ -25,25 +26,29 @@ impl Resources {
         }
     }
 
-    fn add(&mut self, other: &Resources) {
+    fn can_afford(&self, cost: &Resources) -> bool {
+        self.ore >= cost.ore
+            && self.clay >= cost.clay
+            && self.obsidian >= cost.obsidian
+            && self.geode >= cost.geode
+    }
+}
+
+impl AddAssign<&Resources> for Resources {
+    fn add_assign(&mut self, other: &Self) {
         self.ore += other.ore;
         self.clay += other.clay;
         self.obsidian += other.obsidian;
         self.geode += other.geode;
     }
+}
 
-    fn sub(&mut self, other: &Resources) {
+impl SubAssign<&Resources> for Resources {
+    fn sub_assign(&mut self, other: &Self) {
         self.ore -= other.ore;
         self.clay -= other.clay;
         self.obsidian -= other.obsidian;
         self.geode -= other.geode;
-    }
-
-    fn affordable(&self, cost: &Resources) -> bool {
-        self.ore >= cost.ore
-            && self.clay >= cost.clay
-            && self.obsidian >= cost.obsidian
-            && self.geode >= cost.geode
     }
 }
 
@@ -73,6 +78,7 @@ struct SearchState {
     production: Resources,
 }
 
+#[allow(dead_code)]
 fn heuristic(state: &SearchState) -> usize {
     let current_production = state.production.geode;
     let ending_production = state.production.geode + (state.time - 1);
@@ -90,22 +96,22 @@ fn heuristic2(state: &SearchState, blueprint_costs: &BlueprintCosts) -> usize {
     costs.geode.ore = 0;
 
     for _ in (1..=state.time).rev() {
-        if res.affordable(&costs.ore) {
+        if res.can_afford(&costs.ore) {
             new_production.ore += 1;
         }
-        if res.affordable(&costs.clay) {
+        if res.can_afford(&costs.clay) {
             new_production.clay += 1;
-            res.sub(&costs.clay);
+            res -= &costs.clay;
         }
-        if res.affordable(&costs.obsidian) {
+        if res.can_afford(&costs.obsidian) {
             new_production.obsidian += 1;
-            res.sub(&costs.obsidian);
+            res -= &costs.obsidian;
         }
-        if res.affordable(&costs.geode) {
+        if res.can_afford(&costs.geode) {
             new_production.geode += 1;
-            res.sub(&costs.geode);
+            res -= &costs.geode;
         }
-        res.add(&old_production);
+        res += &old_production;
         old_production = new_production.clone();
     }
     res.geode
@@ -155,47 +161,48 @@ fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) 
                 }
 
                 let mut new_state = state.clone();
-                new_state.resources.add(&new_state.production);
+                new_state.resources += &new_state.production;
                 new_state.time -= 1;
                 stack.push(new_state);
 
+                // TODO: Cleanup
                 if state.time >= 4 + costs.ore.ore
                     && state.production.ore < max_costs.ore
-                    && state.resources.affordable(&costs.ore)
+                    && state.resources.can_afford(&costs.ore)
                 {
                     let mut new_state = state.clone();
-                    new_state.resources.sub(&costs.ore);
-                    new_state.resources.add(&new_state.production);
+                    new_state.resources -= &costs.ore;
+                    new_state.resources += &new_state.production;
                     new_state.production.ore += 1;
                     new_state.time -= 1;
                     stack.push(new_state);
                 }
                 if state.time >= 6
                     && state.production.clay < max_costs.clay
-                    && state.resources.affordable(&costs.clay)
+                    && state.resources.can_afford(&costs.clay)
                 {
                     let mut new_state = state.clone();
-                    new_state.resources.sub(&costs.clay);
-                    new_state.resources.add(&new_state.production);
+                    new_state.resources -= &costs.clay;
+                    new_state.resources += &new_state.production;
                     new_state.production.clay += 1;
                     new_state.time -= 1;
                     stack.push(new_state);
                 }
                 if state.time >= 4
                     && state.production.obsidian < max_costs.obsidian
-                    && state.resources.affordable(&costs.obsidian)
+                    && state.resources.can_afford(&costs.obsidian)
                 {
                     let mut new_state = state.clone();
-                    new_state.resources.sub(&costs.obsidian);
-                    new_state.resources.add(&new_state.production);
+                    new_state.resources -= &costs.obsidian;
+                    new_state.resources += &new_state.production;
                     new_state.production.obsidian += 1;
                     new_state.time -= 1;
                     stack.push(new_state);
                 }
-                if state.resources.affordable(&costs.geode) {
+                if state.resources.can_afford(&costs.geode) {
                     let mut new_state = state.clone();
-                    new_state.resources.sub(&costs.geode);
-                    new_state.resources.add(&new_state.production);
+                    new_state.resources -= &costs.geode;
+                    new_state.resources += &new_state.production;
                     new_state.production.geode += 1;
                     new_state.time -= 1;
                     stack.push(new_state);
@@ -217,28 +224,27 @@ fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) 
 }
 
 fn parse_blueprints(filename: &str) -> Vec<BlueprintCosts> {
-    let lines = read_input_as_lines(filename);
-    let mut result: Vec<BlueprintCosts> = Vec::new();
+    read_input_as_lines(filename)
+        .iter()
+        .map(|line| {
+            let mut split_line = line.split(' ');
 
-    for line in lines.iter() {
-        let mut split_line = line.split(' ');
-
-        let mut costs = BlueprintCosts::new();
-        costs.ore.ore = str::parse::<usize>(split_line.nth(6).unwrap()).unwrap();
-        costs.clay.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
-        costs.obsidian.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
-        costs.obsidian.clay = str::parse::<usize>(split_line.nth(2).unwrap()).unwrap();
-        costs.geode.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
-        costs.geode.obsidian = str::parse::<usize>(split_line.nth(2).unwrap()).unwrap();
-
-        result.push(costs);
-    }
-    result
+            let mut costs = BlueprintCosts::new();
+            costs.ore.ore = str::parse::<usize>(split_line.nth(6).unwrap()).unwrap();
+            costs.clay.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
+            costs.obsidian.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
+            costs.obsidian.clay = str::parse::<usize>(split_line.nth(2).unwrap()).unwrap();
+            costs.geode.ore = str::parse::<usize>(split_line.nth(5).unwrap()).unwrap();
+            costs.geode.obsidian = str::parse::<usize>(split_line.nth(2).unwrap()).unwrap();
+            costs
+        })
+        .collect()
 }
 
+// TODO: Make this more clean
 fn solve(filename: &str, num_blueprints: isize, num_minutes: usize) -> Vec<usize> {
     let blueprints = parse_blueprints(filename);
-    if num_blueprints == -1 {
+    if num_blueprints == -1 || num_blueprints >= blueprints.len().try_into().unwrap() {
         simulate_robot_production(&blueprints, num_minutes)
     } else {
         simulate_robot_production(&blueprints[..(num_blueprints as usize)], num_minutes)
