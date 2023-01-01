@@ -1,6 +1,7 @@
 use std::time::Instant;
 
 mod day1;
+mod day10;
 mod day19;
 mod day2;
 mod day3;
@@ -91,6 +92,7 @@ fn main() {
     run_day!(6, run_all, day, task);
     run_day!(7, run_all, day, task);
     run_day!(9, run_all, day, task);
+    run_day!(10, run_all, day, task);
     run_day!(19, run_all, day, task);
 
     if run_all {
