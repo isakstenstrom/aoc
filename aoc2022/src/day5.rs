@@ -1,15 +1,11 @@
 use std::collections::VecDeque;
 
-use crate::util::read_input_from_file;
-
-// Answer should be "RTGWZTHLD"
-pub fn task1() -> String {
-    let lines = read_input_from_file("day5.txt");
-    let num_columns = (lines[0].len() + 1) / 4;
+pub fn task1(input: &[String]) -> String {
+    let num_columns = (input[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
 
     let mut index: usize = 0;
-    for line in &lines {
+    for line in input {
         index += 1;
         if line.chars().nth(1).unwrap() == '1' {
             break;
@@ -27,7 +23,7 @@ pub fn task1() -> String {
     }
     index += 1;
 
-    for line in &lines[index..] {
+    for line in &input[index..] {
         let mut split_line = line.split(' ');
 
         let amount = split_line.nth(1).unwrap().parse::<usize>().unwrap();
@@ -42,14 +38,12 @@ pub fn task1() -> String {
     stacks.iter().map(|s| s.back().unwrap()).collect()
 }
 
-// Answer should be "STHGRZZFR"
-pub fn task2() -> String {
-    let lines = read_input_from_file("day5.txt");
-    let num_columns = (lines[0].len() + 1) / 4;
+pub fn task2(input: &[String]) -> String {
+    let num_columns = (input[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
 
     let mut index: usize = 0;
-    for line in &lines {
+    for line in input {
         index += 1;
         if line.chars().nth(1).unwrap() == '1' {
             break;
@@ -67,7 +61,7 @@ pub fn task2() -> String {
     }
     index += 1;
 
-    for line in &lines[index..] {
+    for line in &input[index..] {
         let mut split_line = line.split(' ');
 
         let amount = split_line.nth(1).unwrap().parse::<usize>().unwrap();
@@ -89,15 +83,18 @@ pub fn task2() -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::day5::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), "RTGWZTHLD");
+        assert_eq!(task1(&read_input_from_file("sample/day5.txt")), "CMZ");
+        assert_eq!(task1(&read_input_from_file("input/day5.txt")), "RTGWZTHLD");
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), "STHGRZZFR");
+        assert_eq!(task2(&read_input_from_file("sample/day5.txt")), "MCD");
+        assert_eq!(task2(&read_input_from_file("input/day5.txt")), "STHGRZZFR");
     }
 }

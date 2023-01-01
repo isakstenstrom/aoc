@@ -4,8 +4,6 @@ use std::{
     thread::{self, JoinHandle},
 };
 
-use crate::util::read_input_from_file;
-
 const DEBUG_PRINT: bool = false;
 
 #[derive(Debug, Clone)]
@@ -223,8 +221,8 @@ fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) 
     result
 }
 
-fn parse_blueprints(filename: &str) -> Vec<BlueprintCosts> {
-    read_input_from_file(filename)
+fn parse_blueprints(input: &[String]) -> Vec<BlueprintCosts> {
+    input
         .iter()
         .map(|line| {
             let mut split_line = line.split(' ');
@@ -242,8 +240,8 @@ fn parse_blueprints(filename: &str) -> Vec<BlueprintCosts> {
 }
 
 // TODO: Make this more clean
-fn solve(filename: &str, num_blueprints: isize, num_minutes: usize) -> Vec<usize> {
-    let blueprints = parse_blueprints(filename);
+fn solve(input: &[String], num_blueprints: isize, num_minutes: usize) -> Vec<usize> {
+    let blueprints = parse_blueprints(input);
     if num_blueprints == -1 || num_blueprints >= blueprints.len().try_into().unwrap() {
         simulate_robot_production(&blueprints, num_minutes)
     } else {
@@ -251,8 +249,8 @@ fn solve(filename: &str, num_blueprints: isize, num_minutes: usize) -> Vec<usize
     }
 }
 
-pub fn task1() -> usize {
-    let scores = solve("day19.txt", -1, 24);
+pub fn task1(input: &[String]) -> usize {
+    let scores = solve(input, -1, 24);
 
     scores
         .into_iter()
@@ -261,14 +259,15 @@ pub fn task1() -> usize {
         .sum()
 }
 
-pub fn task2() -> usize {
-    let scores = solve("day19.txt", 3, 32);
+pub fn task2(input: &[String]) -> usize {
+    let scores = solve(input, 3, 32);
     scores.into_iter().reduce(|res, score| res * score).unwrap()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::day19::{heuristic, task1, task2, Resources, SearchState};
+    use super::{heuristic, task1, task2, Resources, SearchState};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_heuristic() {
@@ -309,11 +308,13 @@ mod tests {
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 1365);
+        assert_eq!(task1(&read_input_from_file("sample/day19.txt")), 33);
+        assert_eq!(task1(&read_input_from_file("input/day19.txt")), 1365);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 4864);
+        assert_eq!(task2(&read_input_from_file("sample/day19.txt")), 56 * 62);
+        assert_eq!(task2(&read_input_from_file("input/day19.txt")), 4864);
     }
 }

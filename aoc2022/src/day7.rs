@@ -3,9 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::util::read_input_from_file;
-
-fn create_file_table(lines: &Vec<String>) -> HashMap<String, u32> {
+fn create_file_table(lines: &[String]) -> HashMap<String, u32> {
     let mut file_table: HashMap<String, u32> = HashMap::new();
     let mut path = PathBuf::new();
     path.push("/");
@@ -46,20 +44,16 @@ fn create_dir_table(file_table: &HashMap<String, u32>) -> HashMap<String, u32> {
     dir_table
 }
 
-pub fn task1() -> u32 {
-    let lines = read_input_from_file("day7.txt");
-
-    create_dir_table(&create_file_table(&lines))
+pub fn task1(input: &[String]) -> u32 {
+    create_dir_table(&create_file_table(input))
         .iter()
         .filter(|d| d.1 <= &100000u32)
         .map(|d| d.1)
         .sum::<u32>()
 }
 
-pub fn task2() -> u32 {
-    let lines = read_input_from_file("day7.txt");
-
-    let dir_table = create_dir_table(&create_file_table(&lines));
+pub fn task2(input: &[String]) -> u32 {
+    let dir_table = create_dir_table(&create_file_table(input));
 
     let space_needed = 30000000 - (70000000 - dir_table.get("/").unwrap());
 
@@ -73,15 +67,18 @@ pub fn task2() -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day7::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 1644735);
+        assert_eq!(task1(&read_input_from_file("sample/day7.txt")), 95437);
+        assert_eq!(task1(&read_input_from_file("input/day7.txt")), 1644735);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 1300850);
+        assert_eq!(task2(&read_input_from_file("sample/day7.txt")), 24933642);
+        assert_eq!(task2(&read_input_from_file("input/day7.txt")), 1300850);
     }
 }

@@ -4,8 +4,6 @@ use std::{
     vec,
 };
 
-use crate::util::read_input_from_file;
-
 const DEBUG_PRINT: bool = false;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -120,12 +118,12 @@ impl Rope {
     }
 }
 
-fn simulate_rope(rope_length: usize) -> usize {
+fn simulate_rope(input: &[String], rope_length: usize) -> usize {
     let mut rope = Rope::new(rope_length);
     let mut visited_points: HashSet<Point> = HashSet::new();
     visited_points.insert(rope.get_tail().clone());
 
-    read_input_from_file("day9.txt").iter().for_each(|line| {
+    input.iter().for_each(|line| {
         let mut split_line = line.split_whitespace();
 
         let dir = Direction::from_str(split_line.next().unwrap()).unwrap();
@@ -142,25 +140,29 @@ fn simulate_rope(rope_length: usize) -> usize {
     visited_points.len()
 }
 
-pub fn task1() -> usize {
-    simulate_rope(2)
+pub fn task1(input: &[String]) -> usize {
+    simulate_rope(input, 2)
 }
 
-pub fn task2() -> usize {
-    simulate_rope(10)
+pub fn task2(input: &[String]) -> usize {
+    simulate_rope(input, 10)
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::day9::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 6311);
+        assert_eq!(task1(&read_input_from_file("sample/day9_1.txt")), 13);
+        assert_eq!(task1(&read_input_from_file("input/day9.txt")), 6311);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 2482);
+        assert_eq!(task2(&read_input_from_file("sample/day9_1.txt")), 1);
+        assert_eq!(task2(&read_input_from_file("sample/day9_2.txt")), 36);
+        assert_eq!(task2(&read_input_from_file("input/day9.txt")), 2482);
     }
 }

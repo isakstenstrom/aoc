@@ -11,15 +11,18 @@ mod day7;
 mod day9;
 mod util;
 
+use crate::util::read_input_from_file;
+
 macro_rules! run_day {
     ( $i:literal ,$run_all:ident, $day:ident, $task:ident ) => {
         if $run_all || $day == $i {
+            let task_input = read_input_from_file(&format!("input/day{}.txt", $i));
             if $task == -1 || $task == 1 {
                 let task_time = Instant::now();
                 println!(
                     "Day {:>2}: Task 1: {:>16}, in {:?}",
                     $i,
-                    paste::expr! {[<day $i>]::task1()},
+                    paste::expr! {[<day $i>]::task1(&task_input)},
                     task_time.elapsed()
                 );
             }
@@ -28,7 +31,7 @@ macro_rules! run_day {
                 println!(
                     "Day {:>2}: Task 2: {:>16}, in {:?}",
                     $i,
-                    paste::expr! {[<day $i>]::task2()},
+                    paste::expr! {[<day $i>]::task2(&task_input)},
                     task_time.elapsed()
                 );
             }

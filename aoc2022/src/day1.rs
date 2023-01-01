@@ -1,8 +1,7 @@
-use crate::util::read_input_from_file;
+use std::mem::swap;
 
-// Answer should be "69281"
-pub fn task1() -> u32 {
-    read_input_from_file("day1.txt")
+pub fn task1(input: &[String]) -> u32 {
+    input
         .join("\n")
         .split("\n\n")
         .map(|l| {
@@ -14,12 +13,9 @@ pub fn task1() -> u32 {
         .unwrap()
 }
 
-// Answer should be "201524"
-pub fn task2() -> u32 {
-    let mut max1: u32 = 0;
-    let mut max2: u32 = 0;
-    let mut max3: u32 = 0;
-    read_input_from_file("day1.txt")
+pub fn task2(input: &[String]) -> u32 {
+    let mut max: Vec<u32> = vec![0; 3];
+    input
         .join("\n")
         .split("\n\n")
         .map(|l| {
@@ -27,29 +23,30 @@ pub fn task2() -> u32 {
                 .map(|c| c.parse::<u32>().unwrap())
                 .sum::<u32>()
         })
-        .for_each(|c| {
-            if c > max1 {
-                max1 = c;
-            } else if c > max2 {
-                max2 = c;
-            } else if c > max3 {
-                max3 = c;
+        .for_each(|mut c| {
+            for m in max.iter_mut() {
+                if c > *m {
+                    swap(&mut c, m);
+                }
             }
         });
-    max1 + max2 + max3
+    max.iter().sum()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::day1::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 69281);
+        assert_eq!(task1(&read_input_from_file("sample/day1.txt")), 24000);
+        assert_eq!(task1(&read_input_from_file("input/day1.txt")), 69281);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 201524);
+        assert_eq!(task2(&read_input_from_file("sample/day1.txt")), 45000);
+        assert_eq!(task2(&read_input_from_file("input/day1.txt")), 201524);
     }
 }

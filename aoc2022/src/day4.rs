@@ -1,5 +1,3 @@
-use crate::util::read_input_from_file;
-
 struct ElfPair {
     first: (u32, u32),
     second: (u32, u32),
@@ -24,18 +22,16 @@ impl ElfPair {
     }
 }
 
-// Answer should be "538"
-pub fn task1() -> usize {
-    read_input_from_file("day4.txt")
+pub fn task1(input: &[String]) -> usize {
+    input
         .iter()
         .map(|l| ElfPair::from_string(l))
         .filter(|p| p.fully_contains())
         .count()
 }
 
-// Answer should be "792"
-pub fn task2() -> usize {
-    read_input_from_file("day4.txt")
+pub fn task2(input: &[String]) -> usize {
+    input
         .iter()
         .map(|l| ElfPair::from_string(l))
         .filter(|p| p.partly_contains())
@@ -44,15 +40,18 @@ pub fn task2() -> usize {
 
 #[cfg(test)]
 mod tests {
-    use crate::day3::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 8176);
+        assert_eq!(task1(&read_input_from_file("sample/day4.txt")), 2);
+        assert_eq!(task1(&read_input_from_file("input/day4.txt")), 538);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 2689);
+        assert_eq!(task2(&read_input_from_file("sample/day4.txt")), 4);
+        assert_eq!(task2(&read_input_from_file("input/day4.txt")), 792);
     }
 }

@@ -1,7 +1,5 @@
 use std::collections::HashSet;
 
-use crate::util::read_input_from_file;
-
 fn char_to_score(c: &char) -> u32 {
     let tmp = *c as u32;
     if tmp >= 97 {
@@ -10,9 +8,8 @@ fn char_to_score(c: &char) -> u32 {
     tmp - 65 + 27
 }
 
-// Answer should be "8176"
-pub fn task1() -> u32 {
-    read_input_from_file("day3.txt")
+pub fn task1(input: &[String]) -> u32 {
+    input
         .iter()
         .map(|line| {
             let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
@@ -23,9 +20,8 @@ pub fn task1() -> u32 {
         .sum()
 }
 
-// Answer should be "2689"
-pub fn task2() -> u32 {
-    read_input_from_file("day3.txt")
+pub fn task2(input: &[String]) -> u32 {
+    input
         .chunks(3)
         .map(|lines| {
             let h1: HashSet<char> = lines[0].chars().into_iter().collect();
@@ -43,15 +39,18 @@ pub fn task2() -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day3::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 8176);
+        assert_eq!(task1(&read_input_from_file("sample/day3.txt")), 157);
+        assert_eq!(task1(&read_input_from_file("input/day3.txt")), 8176);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 2689);
+        assert_eq!(task2(&read_input_from_file("sample/day3.txt")), 70);
+        assert_eq!(task2(&read_input_from_file("input/day3.txt")), 2689);
     }
 }

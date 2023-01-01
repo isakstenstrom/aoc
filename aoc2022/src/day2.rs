@@ -1,5 +1,3 @@
-use crate::util::read_input_from_file;
-
 #[derive(PartialEq)]
 enum Move {
     Rock,
@@ -76,24 +74,20 @@ impl GameResult {
     }
 }
 
-// Answer should be "15523"
-pub fn task1() -> u32 {
-    read_input_from_file("day2.txt")
+pub fn task1(input: &[String]) -> u32 {
+    input
         .iter()
         .map(|line| {
             let p1 = Move::from_char(&line.chars().next().unwrap());
             let p2 = Move::from_char(&line.chars().nth(2).unwrap());
 
             p2.to_score() + p2.get_result(&p1).to_score()
-            // score += p2.to_score();
-            // score += p2.get_result(&p1).to_score();
         })
         .sum()
 }
 
-// Answer should be "15702"
-pub fn task2() -> u32 {
-    read_input_from_file("day2.txt")
+pub fn task2(input: &[String]) -> u32 {
+    input
         .iter()
         .map(|line| {
             let p1 = Move::from_char(&line.chars().next().unwrap());
@@ -106,15 +100,18 @@ pub fn task2() -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day2::{task1, task2};
+    use super::{task1, task2};
+    use crate::util::read_input_from_file;
 
     #[test]
     fn test_task1() {
-        assert_eq!(task1(), 15523);
+        assert_eq!(task1(&read_input_from_file("sample/day2.txt")), 15);
+        assert_eq!(task1(&read_input_from_file("input/day2.txt")), 15523);
     }
 
     #[test]
     fn test_task2() {
-        assert_eq!(task2(), 15702);
+        assert_eq!(task2(&read_input_from_file("sample/day2.txt")), 12);
+        assert_eq!(task2(&read_input_from_file("input/day2.txt")), 15702);
     }
 }
