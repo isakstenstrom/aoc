@@ -41,10 +41,15 @@ fn main() {
     let mut day = -1;
     let mut task = -1;
 
-    let mut arg_iter = std::env::args();
+    let mut arg_iter = std::env::args().peekable();
 
     // Discards the program name
     arg_iter.next();
+
+    // Defaults to -a if no arguments are given
+    if arg_iter.peek().is_none() {
+        run_all = true;
+    }
 
     while let Some(arg) = arg_iter.next() {
         match &arg[..] {
