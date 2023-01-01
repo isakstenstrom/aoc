@@ -3,7 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 fn create_file_table(lines: &Vec<String>) -> HashMap<String, u32> {
     let mut file_table: HashMap<String, u32> = HashMap::new();
@@ -47,7 +47,7 @@ fn create_dir_table(file_table: &HashMap<String, u32>) -> HashMap<String, u32> {
 }
 
 pub fn task1() -> u32 {
-    let lines = read_input_as_lines("day7.txt");
+    let lines = read_input_from_file("day7.txt");
 
     create_dir_table(&create_file_table(&lines))
         .iter()
@@ -57,7 +57,7 @@ pub fn task1() -> u32 {
 }
 
 pub fn task2() -> u32 {
-    let lines = read_input_as_lines("day7.txt");
+    let lines = read_input_from_file("day7.txt");
 
     let dir_table = create_dir_table(&create_file_table(&lines));
 

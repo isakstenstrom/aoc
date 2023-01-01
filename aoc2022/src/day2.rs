@@ -1,4 +1,4 @@
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 #[derive(PartialEq)]
 enum Move {
@@ -78,7 +78,7 @@ impl GameResult {
 
 // Answer should be "15523"
 pub fn task1() -> u32 {
-    read_input_as_lines("day2.txt")
+    read_input_from_file("day2.txt")
         .iter()
         .map(|line| {
             let p1 = Move::from_char(&line.chars().next().unwrap());
@@ -93,7 +93,7 @@ pub fn task1() -> u32 {
 
 // Answer should be "15702"
 pub fn task2() -> u32 {
-    read_input_as_lines("day2.txt")
+    read_input_from_file("day2.txt")
         .iter()
         .map(|line| {
             let p1 = Move::from_char(&line.chars().next().unwrap());

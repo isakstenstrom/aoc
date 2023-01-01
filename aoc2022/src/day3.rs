@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 fn char_to_score(c: &char) -> u32 {
     let tmp = *c as u32;
@@ -12,7 +12,7 @@ fn char_to_score(c: &char) -> u32 {
 
 // Answer should be "8176"
 pub fn task1() -> u32 {
-    read_input_as_lines("day3.txt")
+    read_input_from_file("day3.txt")
         .iter()
         .map(|line| {
             let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
@@ -25,7 +25,7 @@ pub fn task1() -> u32 {
 
 // Answer should be "2689"
 pub fn task2() -> u32 {
-    read_input_as_lines("day3.txt")
+    read_input_from_file("day3.txt")
         .chunks(3)
         .map(|lines| {
             let h1: HashSet<char> = lines[0].chars().into_iter().collect();

@@ -1,10 +1,10 @@
 use std::collections::VecDeque;
 
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 // Answer should be "RTGWZTHLD"
 pub fn task1() -> String {
-    let lines = read_input_as_lines("day5.txt");
+    let lines = read_input_from_file("day5.txt");
     let num_columns = (lines[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
 
@@ -44,7 +44,7 @@ pub fn task1() -> String {
 
 // Answer should be "STHGRZZFR"
 pub fn task2() -> String {
-    let lines = read_input_as_lines("day5.txt");
+    let lines = read_input_from_file("day5.txt");
     let num_columns = (lines[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
 

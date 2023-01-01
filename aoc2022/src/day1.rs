@@ -1,8 +1,9 @@
-use crate::util::read_input_as_string;
+use crate::util::read_input_from_file;
 
 // Answer should be "69281"
 pub fn task1() -> u32 {
-    read_input_as_string("day1.txt")
+    read_input_from_file("day1.txt")
+        .join("\n")
         .split("\n\n")
         .map(|l| {
             l.split('\n')
@@ -18,7 +19,8 @@ pub fn task2() -> u32 {
     let mut max1: u32 = 0;
     let mut max2: u32 = 0;
     let mut max3: u32 = 0;
-    read_input_as_string("day1.txt")
+    read_input_from_file("day1.txt")
+        .join("\n")
         .split("\n\n")
         .map(|l| {
             l.split('\n')

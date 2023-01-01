@@ -1,4 +1,4 @@
-use crate::util::read_input_as_string;
+use crate::util::read_input_from_file;
 
 fn get_index_of_first_substring_with_unique_letters(input: &str, substring_len: usize) -> usize {
     input
@@ -18,11 +18,17 @@ fn get_index_of_first_substring_with_unique_letters(input: &str, substring_len: 
 }
 
 pub fn task1() -> usize {
-    get_index_of_first_substring_with_unique_letters(&read_input_as_string("day6.txt"), 4)
+    get_index_of_first_substring_with_unique_letters(
+        &read_input_from_file("day6.txt").join("\n"),
+        4,
+    )
 }
 
 pub fn task2() -> usize {
-    get_index_of_first_substring_with_unique_letters(&read_input_as_string("day6.txt"), 14)
+    get_index_of_first_substring_with_unique_letters(
+        &read_input_from_file("day6.txt").join("\n"),
+        14,
+    )
 }
 
 #[cfg(test)]

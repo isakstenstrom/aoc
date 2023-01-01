@@ -1,4 +1,4 @@
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 struct ElfPair {
     first: (u32, u32),
@@ -26,7 +26,7 @@ impl ElfPair {
 
 // Answer should be "538"
 pub fn task1() -> usize {
-    read_input_as_lines("day4.txt")
+    read_input_from_file("day4.txt")
         .iter()
         .map(|l| ElfPair::from_string(l))
         .filter(|p| p.fully_contains())
@@ -35,7 +35,7 @@ pub fn task1() -> usize {
 
 // Answer should be "792"
 pub fn task2() -> usize {
-    read_input_as_lines("day4.txt")
+    read_input_from_file("day4.txt")
         .iter()
         .map(|l| ElfPair::from_string(l))
         .filter(|p| p.partly_contains())

@@ -4,7 +4,7 @@ use std::{
     thread::{self, JoinHandle},
 };
 
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 const DEBUG_PRINT: bool = false;
 
@@ -224,7 +224,7 @@ fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) 
 }
 
 fn parse_blueprints(filename: &str) -> Vec<BlueprintCosts> {
-    read_input_as_lines(filename)
+    read_input_from_file(filename)
         .iter()
         .map(|line| {
             let mut split_line = line.split(' ');

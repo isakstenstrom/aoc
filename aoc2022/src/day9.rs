@@ -4,7 +4,7 @@ use std::{
     vec,
 };
 
-use crate::util::read_input_as_lines;
+use crate::util::read_input_from_file;
 
 const DEBUG_PRINT: bool = false;
 
@@ -125,7 +125,7 @@ fn simulate_rope(rope_length: usize) -> usize {
     let mut visited_points: HashSet<Point> = HashSet::new();
     visited_points.insert(rope.get_tail().clone());
 
-    read_input_as_lines("day9.txt").iter().for_each(|line| {
+    read_input_from_file("day9.txt").iter().for_each(|line| {
         let mut split_line = line.split_whitespace();
 
         let dir = Direction::from_str(split_line.next().unwrap()).unwrap();
