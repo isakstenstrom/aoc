@@ -16,9 +16,13 @@ mod util;
 use crate::util::read_input_from_file;
 
 macro_rules! run_day {
-    ( $i:literal ,$run_all:ident, $day:ident, $task:ident ) => {
+    ( $i:literal ,$run_all:ident, $day:ident, $task:ident, $use_sample:ident ) => {
         if $run_all || $day == $i {
-            let task_input = read_input_from_file(&format!("input/day{}.txt", $i));
+            let task_input = if $use_sample {
+                read_input_from_file(&format!("sample/day{}.txt", $i))
+            } else {
+                read_input_from_file(&format!("input/day{}.txt", $i))
+            };
             if $task == -1 || $task == 1 {
                 let task_time = Instant::now();
                 println!(
@@ -45,6 +49,7 @@ fn main() {
     let mut run_all = false;
     let mut day = -1;
     let mut task = -1;
+    let mut use_sample_input = false;
 
     let mut arg_iter = std::env::args().peekable();
 
@@ -79,23 +84,24 @@ fn main() {
                     panic!("Invalid task number. Must be either 1 or 2.");
                 }
             }
+            "-s" | "--sample" => use_sample_input = true,
             _ => panic!("Invalid argument {}", arg),
         }
     }
 
     let total_time = Instant::now();
 
-    run_day!(1, run_all, day, task);
-    run_day!(2, run_all, day, task);
-    run_day!(3, run_all, day, task);
-    run_day!(4, run_all, day, task);
-    run_day!(5, run_all, day, task);
-    run_day!(6, run_all, day, task);
-    run_day!(7, run_all, day, task);
-    run_day!(9, run_all, day, task);
-    run_day!(10, run_all, day, task);
-    run_day!(11, run_all, day, task);
-    run_day!(19, run_all, day, task);
+    run_day!(1, run_all, day, task, use_sample_input);
+    run_day!(2, run_all, day, task, use_sample_input);
+    run_day!(3, run_all, day, task, use_sample_input);
+    run_day!(4, run_all, day, task, use_sample_input);
+    run_day!(5, run_all, day, task, use_sample_input);
+    run_day!(6, run_all, day, task, use_sample_input);
+    run_day!(7, run_all, day, task, use_sample_input);
+    run_day!(9, run_all, day, task, use_sample_input);
+    run_day!(10, run_all, day, task, use_sample_input);
+    run_day!(11, run_all, day, task, use_sample_input);
+    run_day!(19, run_all, day, task, use_sample_input);
 
     if run_all {
         println!("Total time elapsed: {:?}", total_time.elapsed());
