@@ -7,13 +7,18 @@ struct Point {
 }
 
 impl Point {
-    fn add(&mut self, other: &Point) {
-        self.x += other.x;
-        self.y += other.y;
-    }
-
     fn within(&self, lower_x: isize, lower_y: isize, upper_x: isize, upper_y: isize) -> bool {
         lower_x <= self.x && self.x < upper_x && lower_y <= self.y && self.y < upper_y
+    }
+
+    #[rustfmt::skip]
+    fn get_neighbors(&self) -> Vec<Point> {
+        vec![
+            Point {x: self.x    , y: self.y - 1},
+            Point {x: self.x - 1, y: self.y    },
+            Point {x: self.x    , y: self.y + 1},
+            Point {x: self.x + 1, y: self.y    },
+        ]
     }
 }
 
@@ -28,38 +33,31 @@ struct HeightMap {
 impl HeightMap {
     fn new(input: &[String]) -> HeightMap {
         let mut map = HeightMap {
-            heights: Vec::new(),
+            heights: vec![Vec::new(); input.len()],
             start: Point { x: 0, y: 0 },
             end: Point { x: 0, y: 0 },
-            width: 0,
-            height: 0,
+            width: input[0].len(),
+            height: input.len(),
         };
 
         for (y, line) in input.iter().enumerate() {
-            map.heights.push(Vec::new());
-            for (x, c) in line.chars().enumerate() {
-                match c {
-                    'S' => {
-                        map.start = Point {
-                            x: x.try_into().unwrap(),
-                            y: y.try_into().unwrap(),
-                        };
-                        map.heights.last_mut().unwrap().push(('a' as u32) - 97);
-                    }
-                    'E' => {
-                        map.end = Point {
-                            x: x.try_into().unwrap(),
-                            y: y.try_into().unwrap(),
-                        };
-                        map.heights.last_mut().unwrap().push(('z' as u32) - 97);
-                    }
-                    _ => map.heights.last_mut().unwrap().push((c as u32) - 97),
+            for (x, mut c) in line.chars().enumerate() {
+                if c == 'S' {
+                    map.start = Point {
+                        x: x.try_into().unwrap(),
+                        y: y.try_into().unwrap(),
+                    };
+                    c = 'a';
+                } else if c == 'E' {
+                    map.end = Point {
+                        x: x.try_into().unwrap(),
+                        y: y.try_into().unwrap(),
+                    };
+                    c = 'z';
                 }
+                map.heights[y].push((c as u32) - 97);
             }
         }
-        map.height = map.heights.len();
-        map.width = map.heights[0].len();
-
         map
     }
 
@@ -67,55 +65,50 @@ impl HeightMap {
         self.heights[p.y as usize][p.x as usize]
     }
 
-    fn find_path_length(&self, search_for_ground_level: bool) -> usize {
+    fn find_path_length<T>(&self, start: &Point, stop_condition: &T) -> Option<usize>
+    where
+        T: Fn(&Point) -> bool,
+    {
         let mut visited: HashSet<Point> = HashSet::new();
         let mut queue: VecDeque<(Point, usize)> = VecDeque::new();
 
-        // Search from end to start to make part 2 easier
-        visited.insert(self.end);
-        queue.push_back((self.end, 0));
+        visited.insert(*start);
+        queue.push_back((*start, 0));
 
         while let Some((node, num_steps)) = queue.pop_front() {
-            if (search_for_ground_level && self.height_at(&node) == 0)
-                || (!search_for_ground_level && node == self.start)
-            {
-                return num_steps;
+            if stop_condition(&node) {
+                return Some(num_steps);
             }
 
             visited.insert(node);
-            for adjacent_point in [
-                Point { x: 0, y: -1 },
-                Point { x: -1, y: 0 },
-                Point { x: 1, y: 0 },
-                Point { x: 0, y: 1 },
-            ] {
-                let mut neighbour = node;
-                neighbour.add(&adjacent_point);
-                if neighbour.within(
+            for neighbor in node.get_neighbors() {
+                if neighbor.within(
                     0,
                     0,
                     self.width.try_into().unwrap(),
                     self.height.try_into().unwrap(),
-                ) && !visited.contains(&neighbour)
-                    && self.height_at(&neighbour) + 1 >= self.height_at(&node)
+                ) && !visited.contains(&neighbor)
+                    && self.height_at(&neighbor) + 1 >= self.height_at(&node)
                 {
-                    visited.insert(neighbour);
-                    queue.push_back((neighbour, num_steps + 1));
+                    visited.insert(neighbor);
+                    queue.push_back((neighbor, num_steps + 1));
                 }
             }
         }
-        0
+        None
     }
 }
 
 pub fn task1(input: &[String]) -> usize {
     let map = HeightMap::new(input);
-    map.find_path_length(false)
+    map.find_path_length(&map.end, &|node| *node == map.start)
+        .expect("No solution found!")
 }
 
 pub fn task2(input: &[String]) -> usize {
     let map = HeightMap::new(input);
-    map.find_path_length(true)
+    map.find_path_length(&map.end, &|node| map.height_at(node) == 0)
+        .expect("No solution found!")
 }
 
 #[cfg(test)]
