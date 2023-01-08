@@ -4,6 +4,7 @@ mod day1;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
 mod day19;
 mod day2;
 mod day3;
@@ -105,6 +106,7 @@ fn main() {
     run_day!(10, run_all, day, task, use_sample_input);
     run_day!(11, run_all, day, task, use_sample_input);
     run_day!(12, run_all, day, task, use_sample_input);
+    run_day!(13, run_all, day, task, use_sample_input);
     run_day!(19, run_all, day, task, use_sample_input);
 
     if run_all {
