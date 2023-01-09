@@ -1,26 +1,5 @@
+use crate::util::Point;
 use std::collections::{HashSet, VecDeque};
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-struct Point {
-    x: isize,
-    y: isize,
-}
-
-impl Point {
-    fn within(&self, lower_x: isize, lower_y: isize, upper_x: isize, upper_y: isize) -> bool {
-        lower_x <= self.x && self.x < upper_x && lower_y <= self.y && self.y < upper_y
-    }
-
-    #[rustfmt::skip]
-    fn get_neighbors(&self) -> Vec<Point> {
-        vec![
-            Point {x: self.x    , y: self.y - 1},
-            Point {x: self.x - 1, y: self.y    },
-            Point {x: self.x    , y: self.y + 1},
-            Point {x: self.x + 1, y: self.y    },
-        ]
-    }
-}
 
 struct HeightMap {
     heights: Vec<Vec<u32>>,
@@ -82,7 +61,7 @@ impl HeightMap {
 
             visited.insert(node);
             for neighbor in node.get_neighbors() {
-                if neighbor.within(
+                if neighbor.is_within(
                     0,
                     0,
                     self.width.try_into().unwrap(),
