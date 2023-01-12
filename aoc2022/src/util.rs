@@ -64,11 +64,15 @@ impl FromStr for Point {
 }
 
 impl Point {
-    pub fn max_distance_to(&mut self, other: &Point) -> u32 {
+    pub fn max_distance_to(&self, other: &Point) -> u32 {
         cmp::max(
             (self.x - other.x).unsigned_abs(),
             (self.y - other.y).unsigned_abs(),
         )
+    }
+
+    pub fn manhattan_distance_to(&self, other: &Point) -> u32 {
+        (self.x - other.x).unsigned_abs() + (self.y - other.y).unsigned_abs()
     }
 
     pub fn is_within(&self, lower_x: i32, lower_y: i32, upper_x: i32, upper_y: i32) -> bool {
