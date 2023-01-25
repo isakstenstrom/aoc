@@ -11,13 +11,13 @@ struct Line {
 }
 
 impl Line {
-    fn from_points(p1: &Point, p2: &Point) -> Self {
+    fn from_points(p1: &Point<i32>, p2: &Point<i32>) -> Self {
         let k = (p2.y - p1.y) / (p2.x - p1.x);
         let m = p1.y - k * p1.x;
         Self { k, m }
     }
 
-    fn intersection(&self, other: &Line) -> Option<Point> {
+    fn intersection(&self, other: &Line) -> Option<Point<i32>> {
         if self.k == other.k {
             return None;
         }
@@ -31,8 +31,8 @@ impl Line {
 
 #[derive(Debug)]
 struct Sensor {
-    location: Point,
-    beacon: Point,
+    location: Point<i32>,
+    beacon: Point<i32>,
     range: usize,
 }
 

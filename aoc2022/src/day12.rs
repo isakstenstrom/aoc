@@ -3,8 +3,8 @@ use std::collections::{HashSet, VecDeque};
 
 struct HeightMap {
     heights: Vec<Vec<u32>>,
-    start: Point,
-    end: Point,
+    start: Point<i32>,
+    end: Point<i32>,
     width: usize,
     height: usize,
 }
@@ -40,16 +40,16 @@ impl HeightMap {
         map
     }
 
-    fn height_at(&self, p: &Point) -> u32 {
+    fn height_at(&self, p: &Point<i32>) -> u32 {
         self.heights[p.y as usize][p.x as usize]
     }
 
-    fn find_path_length<T>(&self, start: &Point, stop_condition: &T) -> Option<usize>
+    fn find_path_length<T>(&self, start: &Point<i32>, stop_condition: &T) -> Option<usize>
     where
-        T: Fn(&Point) -> bool,
+        T: Fn(&Point<i32>) -> bool,
     {
-        let mut visited: HashSet<Point> = HashSet::new();
-        let mut queue: VecDeque<(Point, usize)> = VecDeque::new();
+        let mut visited: HashSet<Point<i32>> = HashSet::new();
+        let mut queue: VecDeque<(Point<i32>, usize)> = VecDeque::new();
 
         visited.insert(*start);
         queue.push_back((*start, 0));

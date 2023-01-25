@@ -2,9 +2,11 @@ use std::{
     cmp,
     fs::File,
     io::{self, BufRead},
-    ops::{Add, AddAssign, Mul},
+    ops::{Add, AddAssign, Mul, Sub},
     str::FromStr,
 };
+
+use num::One;
 
 pub fn read_input_from_file(filename: &str) -> Vec<String> {
     let file = File::open("res/".to_owned() + filename).expect("Error: input file does not exist");
@@ -12,12 +14,15 @@ pub fn read_input_from_file(filename: &str) -> Vec<String> {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct Point {
-    pub x: i32,
-    pub y: i32,
+pub struct Point<T> {
+    pub x: T,
+    pub y: T,
 }
 
-impl Add for Point {
+impl<T> Add for Point<T>
+where
+    T: Add<Output = T>,
+{
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
@@ -28,7 +33,10 @@ impl Add for Point {
     }
 }
 
-impl AddAssign for Point {
+impl<T> AddAssign for Point<T>
+where
+    T: Add<Output = T> + Copy,
+{
     fn add_assign(&mut self, other: Self) {
         *self = Self {
             x: self.x + other.x,
@@ -37,10 +45,13 @@ impl AddAssign for Point {
     }
 }
 
-impl Mul<i32> for Point {
+impl<T> Mul<T> for Point<T>
+where
+    T: Mul<Output = T> + Copy,
+{
     type Output = Self;
 
-    fn mul(self, factor: i32) -> Self {
+    fn mul(self, factor: T) -> Self {
         Self {
             x: self.x * factor,
             y: self.y * factor,
@@ -51,41 +62,54 @@ impl Mul<i32> for Point {
 #[derive(Debug, PartialEq, Eq)]
 pub struct ParsePointError;
 
-impl FromStr for Point {
+impl<T, U> FromStr for Point<T>
+where
+    T: FromStr<Err = U>,
+{
     type Err = ParsePointError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let split_s = s.split_once(',').ok_or(ParsePointError)?;
-        Ok(Point {
-            x: split_s.0.parse::<i32>().map_err(|_| ParsePointError)?,
-            y: split_s.1.parse::<i32>().map_err(|_| ParsePointError)?,
+        Ok(Self {
+            x: split_s.0.parse::<T>().map_err(|_| ParsePointError)?,
+            y: split_s.1.parse::<T>().map_err(|_| ParsePointError)?,
         })
     }
 }
 
-impl Point {
-    pub fn max_distance_to(&self, other: &Point) -> u32 {
+impl Point<i32> {
+    pub fn max_distance_to(&self, other: &Self) -> u32 {
         cmp::max(
             (self.x - other.x).unsigned_abs(),
             (self.y - other.y).unsigned_abs(),
         )
     }
 
-    pub fn manhattan_distance_to(&self, other: &Point) -> u32 {
+    pub fn manhattan_distance_to(&self, other: &Self) -> u32 {
         (self.x - other.x).unsigned_abs() + (self.y - other.y).unsigned_abs()
     }
+}
 
-    pub fn is_within(&self, lower_x: i32, lower_y: i32, upper_x: i32, upper_y: i32) -> bool {
+impl<T> Point<T>
+where
+    T: PartialOrd,
+{
+    pub fn is_within(&self, lower_x: T, lower_y: T, upper_x: T, upper_y: T) -> bool {
         lower_x <= self.x && self.x < upper_x && lower_y <= self.y && self.y < upper_y
     }
+}
 
+impl<T> Point<T>
+where
+    T: Add<Output = T> + Sub<Output = T> + num::One + Copy,
+{
     #[rustfmt::skip]
-    pub fn get_neighbors(&self) -> [Point; 4] {
+    pub fn get_neighbors(&self) -> [Self; 4] {
         [
-            Point {x: self.x    , y: self.y - 1},
-            Point {x: self.x - 1, y: self.y    },
-            Point {x: self.x    , y: self.y + 1},
-            Point {x: self.x + 1, y: self.y    },
+            Self {x: self.x             , y: self.y - One::one()},
+            Self {x: self.x - One::one(), y: self.y             },
+            Self {x: self.x             , y: self.y + One::one()},
+            Self {x: self.x + One::one(), y: self.y             },
         ]
     }
 }

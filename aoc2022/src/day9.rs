@@ -22,7 +22,7 @@ impl Direction {
         }
     }
 
-    fn get_move(&self) -> Point {
+    fn get_move(&self) -> Point<i32> {
         match self {
             Direction::Up => Point { x: 0, y: 1 },
             Direction::Down => Point { x: 0, y: -1 },
@@ -33,7 +33,7 @@ impl Direction {
 }
 
 struct Rope {
-    knots: Vec<Point>,
+    knots: Vec<Point<i32>>,
 }
 
 impl Rope {
@@ -57,7 +57,7 @@ impl Rope {
         }
     }
 
-    fn get_tail(&self) -> &Point {
+    fn get_tail(&self) -> &Point<i32> {
         self.knots.last().unwrap()
     }
 
@@ -97,7 +97,7 @@ impl Rope {
 
 fn simulate_rope(input: &[String], rope_length: usize) -> usize {
     let mut rope = Rope::new(rope_length);
-    let mut visited_points: HashSet<Point> = HashSet::new();
+    let mut visited_points: HashSet<Point<i32>> = HashSet::new();
     visited_points.insert(*rope.get_tail());
 
     input.iter().for_each(|line| {

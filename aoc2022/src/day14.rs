@@ -6,19 +6,19 @@ struct RockMaze {
     array_offset: usize,
     height: usize,
     amount_of_sand: usize,
-    next_start_pos: Point,
+    next_start_pos: Point<i32>,
 }
 
 impl RockMaze {
     fn new(input: &[String], add_floor: bool) -> Result<Self, ParsePointError> {
-        let rock_rows: Vec<Vec<Point>> = input
+        let rock_rows: Vec<Vec<Point<i32>>> = input
             .iter()
             .map(|line| {
                 line.split(" -> ")
-                    .map(|s| s.parse::<Point>())
-                    .collect::<Result<Vec<Point>, ParsePointError>>()
+                    .map(|s| s.parse::<Point<i32>>())
+                    .collect::<Result<Vec<Point<i32>>, ParsePointError>>()
             })
-            .collect::<Result<Vec<Vec<Point>>, ParsePointError>>()?;
+            .collect::<Result<Vec<Vec<Point<i32>>>, ParsePointError>>()?;
 
         let mut x_min: usize = 500;
         let mut x_max: usize = 500;
@@ -78,7 +78,7 @@ impl RockMaze {
         Ok(rock_maze)
     }
 
-    fn get_content_with_point(&self, p: &Point) -> bool {
+    fn get_content_with_point(&self, p: &Point<i32>) -> bool {
         self.grid[p.y as usize][(p.x as usize) - self.array_offset]
     }
 
@@ -86,11 +86,11 @@ impl RockMaze {
         self.grid[y][x - self.array_offset] = content;
     }
 
-    fn set_content_with_point(&mut self, p: &Point, content: bool) {
+    fn set_content_with_point(&mut self, p: &Point<i32>, content: bool) {
         self.grid[p.y as usize][(p.x as usize) - self.array_offset] = content;
     }
 
-    const POSSIBLE_NEIGHBORS: [Point; 3] = [
+    const POSSIBLE_NEIGHBORS: [Point<i32>; 3] = [
         Point { x: 0, y: 1 },
         Point { x: -1, y: 1 },
         Point { x: 1, y: 1 },
