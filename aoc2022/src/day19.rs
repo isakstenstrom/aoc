@@ -249,7 +249,7 @@ fn solve(input: &[String], num_blueprints: isize, num_minutes: usize) -> Vec<usi
     }
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     let scores = solve(input, -1, 24);
 
     scores
@@ -259,7 +259,7 @@ pub fn task1(input: &[String]) -> usize {
         .sum()
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     let scores = solve(input, 3, 32);
     scores.into_iter().reduce(|res, score| res * score).unwrap()
 }
@@ -307,14 +307,14 @@ mod tests {
     }
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day19.txt")), 33);
-        assert_eq!(task1(&read_input_from_file("input/day19.txt")), 1365);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day19.txt")), 33);
+        assert_eq!(part1(&read_input_from_file("input/day19.txt")), 1365);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day19.txt")), 56 * 62);
-        assert_eq!(task2(&read_input_from_file("input/day19.txt")), 4864);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day19.txt")), 56 * 62);
+        assert_eq!(part2(&read_input_from_file("input/day19.txt")), 4864);
     }
 }

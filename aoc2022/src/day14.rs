@@ -131,7 +131,7 @@ impl RockMaze {
     }
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     let mut maze = RockMaze::new(input, false).unwrap();
 
     while maze.simulate_sand() {}
@@ -139,7 +139,7 @@ pub fn task1(input: &[String]) -> usize {
     maze.amount_of_sand
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     let mut maze = RockMaze::new(input, true).unwrap();
 
     while maze.simulate_sand() {}
@@ -153,14 +153,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day14.txt")), 24);
-        assert_eq!(task1(&read_input_from_file("input/day14.txt")), 897);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day14.txt")), 24);
+        assert_eq!(part1(&read_input_from_file("input/day14.txt")), 897);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day14.txt")), 93);
-        assert_eq!(task2(&read_input_from_file("input/day14.txt")), 26683);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day14.txt")), 93);
+        assert_eq!(part2(&read_input_from_file("input/day14.txt")), 26683);
     }
 }

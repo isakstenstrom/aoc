@@ -78,13 +78,13 @@ impl HeightMap {
     }
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     let map = HeightMap::new(input);
     map.find_path_length(&map.end, &|node| *node == map.start)
         .expect("No solution found!")
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     let map = HeightMap::new(input);
     map.find_path_length(&map.end, &|node| map.height_at(node) == 0)
         .expect("No solution found!")
@@ -96,14 +96,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day12.txt")), 31);
-        assert_eq!(task1(&read_input_from_file("input/day12.txt")), 490);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day12.txt")), 31);
+        assert_eq!(part1(&read_input_from_file("input/day12.txt")), 490);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day12.txt")), 29);
-        assert_eq!(task2(&read_input_from_file("input/day12.txt")), 488);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day12.txt")), 29);
+        assert_eq!(part2(&read_input_from_file("input/day12.txt")), 488);
     }
 }

@@ -1,6 +1,6 @@
 use std::cmp::max;
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     let mut grid: Vec<Vec<(i32, bool)>> = input
         .iter()
         .map(|line| {
@@ -78,7 +78,7 @@ fn get_scenic_score(grid: &mut Vec<Vec<(i32, bool)>>, x: usize, y: usize) -> u32
     score_up * score_down * score_left * score_right
 }
 
-pub fn task2(input: &[String]) -> u32 {
+pub fn part2(input: &[String]) -> u32 {
     let mut grid: Vec<Vec<(i32, bool)>> = input
         .iter()
         .map(|line| {
@@ -100,19 +100,19 @@ pub fn task2(input: &[String]) -> u32 {
 #[cfg(test)]
 mod tests {
     use crate::{
-        day8::{task1, task2},
+        day8::{part1, part2},
         util::read_input_from_file,
     };
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day8.txt")), 21);
-        assert_eq!(task1(&read_input_from_file("input/day8.txt")), 1672);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day8.txt")), 21);
+        assert_eq!(part1(&read_input_from_file("input/day8.txt")), 1672);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day8.txt")), 8);
-        assert_eq!(task2(&read_input_from_file("input/day8.txt")), 327180);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day8.txt")), 8);
+        assert_eq!(part2(&read_input_from_file("input/day8.txt")), 327180);
     }
 }

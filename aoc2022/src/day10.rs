@@ -11,7 +11,7 @@ fn simulate_register(input: &[String]) -> Vec<i32> {
     result
 }
 
-pub fn task1(input: &[String]) -> i32 {
+pub fn part1(input: &[String]) -> i32 {
     simulate_register(input)
         .iter()
         .enumerate()
@@ -20,7 +20,7 @@ pub fn task1(input: &[String]) -> i32 {
         .sum()
 }
 
-pub fn task2(input: &[String]) -> String {
+pub fn part2(input: &[String]) -> String {
     simulate_register(input)
         .iter()
         .enumerate()
@@ -49,16 +49,16 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day10.txt")), 13140);
-        assert_eq!(task1(&read_input_from_file("input/day10.txt")), 14360);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day10.txt")), 13140);
+        assert_eq!(part1(&read_input_from_file("input/day10.txt")), 14360);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day10.txt")), "\n##..##..##..##..##..##..##..##..##..##..\n###...###...###...###...###...###...###.\n####....####....####....####....####....\n#####.....#####.....#####.....#####.....\n######......######......######......####\n#######.......#######.......#######.....");
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day10.txt")), "\n##..##..##..##..##..##..##..##..##..##..\n###...###...###...###...###...###...###.\n####....####....####....####....####....\n#####.....#####.....#####.....#####.....\n######......######......######......####\n#######.......#######.......#######.....");
 
-        // Correct task result is "BGKAEREZ"
-        assert_eq!(task2(&read_input_from_file("input/day10.txt")), "\n###...##..#..#..##..####.###..####.####.\n#..#.#..#.#.#..#..#.#....#..#.#.......#.\n###..#....##...#..#.###..#..#.###....#..\n#..#.#.##.#.#..####.#....###..#.....#...\n#..#.#..#.#.#..#..#.#....#.#..#....#....\n###...###.#..#.#..#.####.#..#.####.####.");
+        // Correct part result is "BGKAEREZ"
+        assert_eq!(part2(&read_input_from_file("input/day10.txt")), "\n###...##..#..#..##..####.###..####.####.\n#..#.#..#.#.#..#..#.#....#..#.#.......#.\n###..#....##...#..#.###..#..#.###....#..\n#..#.#.##.#.#..####.#....###..#.....#...\n#..#.#..#.#.#..#..#.#....#.#..#....#....\n###...###.#..#.#..#.####.#..#.####.####.");
     }
 }

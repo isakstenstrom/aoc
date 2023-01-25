@@ -94,7 +94,7 @@ fn simulate_monkeys(monkeys: &mut [Monkey], num_iterations: usize, divide_worry_
     }
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     let mut monkeys = parse_monkeys(input);
     simulate_monkeys(&mut monkeys, 20, 3);
 
@@ -111,7 +111,7 @@ pub fn task1(input: &[String]) -> usize {
     max1 * max2
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     let mut monkeys = parse_monkeys(input);
     simulate_monkeys(&mut monkeys, 10000, 1);
 
@@ -134,14 +134,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day11.txt")), 10605);
-        assert_eq!(task1(&read_input_from_file("input/day11.txt")), 72884);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day11.txt")), 10605);
+        assert_eq!(part1(&read_input_from_file("input/day11.txt")), 72884);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day11.txt")), 2713310158);
-        assert_eq!(task2(&read_input_from_file("input/day11.txt")), 15310845153);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day11.txt")), 2713310158);
+        assert_eq!(part2(&read_input_from_file("input/day11.txt")), 15310845153);
     }
 }

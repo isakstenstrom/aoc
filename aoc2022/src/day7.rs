@@ -44,7 +44,7 @@ fn create_dir_table(file_table: &HashMap<String, u32>) -> HashMap<String, u32> {
     dir_table
 }
 
-pub fn task1(input: &[String]) -> u32 {
+pub fn part1(input: &[String]) -> u32 {
     create_dir_table(&create_file_table(input))
         .iter()
         .filter(|d| d.1 <= &100000u32)
@@ -52,7 +52,7 @@ pub fn task1(input: &[String]) -> u32 {
         .sum::<u32>()
 }
 
-pub fn task2(input: &[String]) -> u32 {
+pub fn part2(input: &[String]) -> u32 {
     let dir_table = create_dir_table(&create_file_table(input));
 
     let space_needed = 30000000 - (70000000 - dir_table.get("/").unwrap());
@@ -71,14 +71,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day7.txt")), 95437);
-        assert_eq!(task1(&read_input_from_file("input/day7.txt")), 1644735);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day7.txt")), 95437);
+        assert_eq!(part1(&read_input_from_file("input/day7.txt")), 1644735);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day7.txt")), 24933642);
-        assert_eq!(task2(&read_input_from_file("input/day7.txt")), 1300850);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day7.txt")), 24933642);
+        assert_eq!(part2(&read_input_from_file("input/day7.txt")), 1300850);
     }
 }

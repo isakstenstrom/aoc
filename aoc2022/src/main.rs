@@ -23,29 +23,29 @@ mod util;
 use crate::util::read_input_from_file;
 
 macro_rules! run_day {
-    ( $i:literal ,$run_all:ident, $day:ident, $task:ident, $use_sample:ident ) => {
+    ( $i:literal ,$run_all:ident, $day:ident, $part:ident, $use_sample:ident ) => {
         if $run_all || $day == $i {
-            let task_input = if $use_sample {
+            let part_input = if $use_sample {
                 read_input_from_file(&format!("sample/day{}.txt", $i))
             } else {
                 read_input_from_file(&format!("input/day{}.txt", $i))
             };
-            if $task == -1 || $task == 1 {
-                let task_time = Instant::now();
+            if $part == -1 || $part == 1 {
+                let part_time = Instant::now();
                 println!(
-                    "Day {:>2}: Task 1: {:>16}, in {:?}",
+                    "Day {:>2}: part 1: {:>16}, in {:?}",
                     $i,
-                    paste::expr! {[<day $i>]::task1(&task_input)},
-                    task_time.elapsed()
+                    paste::expr! {[<day $i>]::part1(&part_input)},
+                    part_time.elapsed()
                 );
             }
-            if $task == -1 || $task == 2 {
-                let task_time = Instant::now();
+            if $part == -1 || $part == 2 {
+                let part_time = Instant::now();
                 println!(
-                    "Day {:>2}: Task 2: {:>16}, in {:?}",
+                    "Day {:>2}: part 2: {:>16}, in {:?}",
                     $i,
-                    paste::expr! {[<day $i>]::task2(&task_input)},
-                    task_time.elapsed()
+                    paste::expr! {[<day $i>]::part2(&part_input)},
+                    part_time.elapsed()
                 );
             }
         }
@@ -55,7 +55,7 @@ macro_rules! run_day {
 fn main() {
     let mut run_all = false;
     let mut day = -1;
-    let mut task = -1;
+    let mut part = -1;
     let mut use_sample_input = false;
 
     let mut arg_iter = std::env::args().peekable();
@@ -74,21 +74,21 @@ fn main() {
             "-d" | "--day" => {
                 day = arg_iter
                     .next()
-                    .expect("Missing task number.")
+                    .expect("Missing part number.")
                     .parse()
                     .expect("Invalid day number. Must be an integer between 1 and 25 (including).");
                 if !(1..=25).contains(&day) {
                     panic!("Invalid day number. Must be an integer between 1 and 25 (including).");
                 }
             }
-            "-t" | "--task" => {
-                task = arg_iter
+            "-p" | "--part" => {
+                part = arg_iter
                     .next()
-                    .expect("Missing task number.")
+                    .expect("Missing part number.")
                     .parse()
-                    .expect("Invalid task number. Must be either 1 or 2.");
-                if !(1..=2).contains(&task) {
-                    panic!("Invalid task number. Must be either 1 or 2.");
+                    .expect("Invalid part number. Must be either 1 or 2.");
+                if !(1..=2).contains(&part) {
+                    panic!("Invalid part number. Must be either 1 or 2.");
                 }
             }
             "-s" | "--sample" => use_sample_input = true,
@@ -98,24 +98,24 @@ fn main() {
 
     let total_time = Instant::now();
 
-    run_day!(1, run_all, day, task, use_sample_input);
-    run_day!(2, run_all, day, task, use_sample_input);
-    run_day!(3, run_all, day, task, use_sample_input);
-    run_day!(4, run_all, day, task, use_sample_input);
-    run_day!(5, run_all, day, task, use_sample_input);
-    run_day!(6, run_all, day, task, use_sample_input);
-    run_day!(7, run_all, day, task, use_sample_input);
-    run_day!(8, run_all, day, task, use_sample_input);
-    run_day!(9, run_all, day, task, use_sample_input);
-    run_day!(10, run_all, day, task, use_sample_input);
-    run_day!(11, run_all, day, task, use_sample_input);
-    run_day!(12, run_all, day, task, use_sample_input);
-    run_day!(13, run_all, day, task, use_sample_input);
-    run_day!(14, run_all, day, task, use_sample_input);
-    run_day!(15, run_all, day, task, use_sample_input);
-    run_day!(16, run_all, day, task, use_sample_input);
-    run_day!(17, run_all, day, task, use_sample_input);
-    run_day!(19, run_all, day, task, use_sample_input);
+    run_day!(1, run_all, day, part, use_sample_input);
+    run_day!(2, run_all, day, part, use_sample_input);
+    run_day!(3, run_all, day, part, use_sample_input);
+    run_day!(4, run_all, day, part, use_sample_input);
+    run_day!(5, run_all, day, part, use_sample_input);
+    run_day!(6, run_all, day, part, use_sample_input);
+    run_day!(7, run_all, day, part, use_sample_input);
+    run_day!(8, run_all, day, part, use_sample_input);
+    run_day!(9, run_all, day, part, use_sample_input);
+    run_day!(10, run_all, day, part, use_sample_input);
+    run_day!(11, run_all, day, part, use_sample_input);
+    run_day!(12, run_all, day, part, use_sample_input);
+    run_day!(13, run_all, day, part, use_sample_input);
+    run_day!(14, run_all, day, part, use_sample_input);
+    run_day!(15, run_all, day, part, use_sample_input);
+    run_day!(16, run_all, day, part, use_sample_input);
+    run_day!(17, run_all, day, part, use_sample_input);
+    run_day!(19, run_all, day, part, use_sample_input);
 
     if run_all {
         println!("Total time elapsed: {:?}", total_time.elapsed());

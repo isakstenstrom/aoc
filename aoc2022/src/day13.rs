@@ -91,7 +91,7 @@ impl Packet {
     }
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     let packets: Vec<Packet> = input
         .iter()
         .filter(|line| !line.is_empty())
@@ -106,7 +106,7 @@ pub fn task1(input: &[String]) -> usize {
         .sum()
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     // I assume that the divider packets are unique and the input will not
     // contain any packets identical to those. If there were, the problem would
     // not have a definite solution since the order of those packets isn't
@@ -131,14 +131,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day13.txt")), 13);
-        assert_eq!(task1(&read_input_from_file("input/day13.txt")), 5808);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day13.txt")), 13);
+        assert_eq!(part1(&read_input_from_file("input/day13.txt")), 5808);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day13.txt")), 140);
-        assert_eq!(task2(&read_input_from_file("input/day13.txt")), 22713);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day13.txt")), 140);
+        assert_eq!(part2(&read_input_from_file("input/day13.txt")), 22713);
     }
 }

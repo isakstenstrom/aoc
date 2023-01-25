@@ -187,11 +187,11 @@ fn solve(input: &[String], max_num_rocks: u64) -> u64 {
     u64::try_from(tower.get_height()).unwrap() + cycle_added_length
 }
 
-pub fn task1(input: &[String]) -> u64 {
+pub fn part1(input: &[String]) -> u64 {
     solve(input, PART_1_MAX_ITERATIONS)
 }
 
-pub fn task2(input: &[String]) -> u64 {
+pub fn part2(input: &[String]) -> u64 {
     solve(input, PART_2_MAX_ITERATIONS)
 }
 
@@ -201,19 +201,19 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day17.txt")), 3068);
-        assert_eq!(task1(&read_input_from_file("input/day17.txt")), 3209);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day17.txt")), 3068);
+        assert_eq!(part1(&read_input_from_file("input/day17.txt")), 3209);
     }
 
     #[test]
-    fn test_task2() {
+    fn test_part2() {
         assert_eq!(
-            task2(&read_input_from_file("sample/day17.txt")),
+            part2(&read_input_from_file("sample/day17.txt")),
             1514285714288
         );
         assert_eq!(
-            task2(&read_input_from_file("input/day17.txt")),
+            part2(&read_input_from_file("input/day17.txt")),
             1580758017509
         );
     }

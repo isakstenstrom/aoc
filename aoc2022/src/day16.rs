@@ -334,11 +334,11 @@ fn solve(input: &[String], time_for_user_1: usize, time_for_user_2: usize) -> us
     )
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     solve(input, 30, 0)
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     solve(input, 26, 26)
 }
 
@@ -348,14 +348,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day16.txt")), 1651);
-        assert_eq!(task1(&read_input_from_file("input/day16.txt")), 1944);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day16.txt")), 1651);
+        assert_eq!(part1(&read_input_from_file("input/day16.txt")), 1944);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day16.txt")), 1707);
-        assert_eq!(task2(&read_input_from_file("input/day16.txt")), 2679);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day16.txt")), 1707);
+        assert_eq!(part2(&read_input_from_file("input/day16.txt")), 2679);
     }
 }

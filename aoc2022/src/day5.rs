@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-pub fn task1(input: &[String]) -> String {
+pub fn part1(input: &[String]) -> String {
     let num_columns = (input[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
 
@@ -38,7 +38,7 @@ pub fn task1(input: &[String]) -> String {
     stacks.iter().map(|s| s.back().unwrap()).collect()
 }
 
-pub fn task2(input: &[String]) -> String {
+pub fn part2(input: &[String]) -> String {
     let num_columns = (input[0].len() + 1) / 4;
     let mut stacks: Vec<VecDeque<char>> = vec![VecDeque::new(); num_columns];
 
@@ -87,14 +87,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day5.txt")), "CMZ");
-        assert_eq!(task1(&read_input_from_file("input/day5.txt")), "RTGWZTHLD");
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day5.txt")), "CMZ");
+        assert_eq!(part1(&read_input_from_file("input/day5.txt")), "RTGWZTHLD");
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day5.txt")), "MCD");
-        assert_eq!(task2(&read_input_from_file("input/day5.txt")), "STHGRZZFR");
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day5.txt")), "MCD");
+        assert_eq!(part2(&read_input_from_file("input/day5.txt")), "STHGRZZFR");
     }
 }

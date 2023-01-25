@@ -22,7 +22,7 @@ impl ElfPair {
     }
 }
 
-pub fn task1(input: &[String]) -> usize {
+pub fn part1(input: &[String]) -> usize {
     input
         .iter()
         .map(|l| ElfPair::from_string(l))
@@ -30,7 +30,7 @@ pub fn task1(input: &[String]) -> usize {
         .count()
 }
 
-pub fn task2(input: &[String]) -> usize {
+pub fn part2(input: &[String]) -> usize {
     input
         .iter()
         .map(|l| ElfPair::from_string(l))
@@ -44,14 +44,14 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
-        assert_eq!(task1(&read_input_from_file("sample/day4.txt")), 2);
-        assert_eq!(task1(&read_input_from_file("input/day4.txt")), 538);
+    fn test_part1() {
+        assert_eq!(part1(&read_input_from_file("sample/day4.txt")), 2);
+        assert_eq!(part1(&read_input_from_file("input/day4.txt")), 538);
     }
 
     #[test]
-    fn test_task2() {
-        assert_eq!(task2(&read_input_from_file("sample/day4.txt")), 4);
-        assert_eq!(task2(&read_input_from_file("input/day4.txt")), 792);
+    fn test_part2() {
+        assert_eq!(part2(&read_input_from_file("sample/day4.txt")), 4);
+        assert_eq!(part2(&read_input_from_file("input/day4.txt")), 792);
     }
 }

@@ -175,7 +175,7 @@ fn merge_ranges(mut ranges: Vec<(i32, i32)>) -> Vec<(i32, i32)> {
     merged_ranges
 }
 
-fn task1_solver(input: &[String], y: i32) -> usize {
+fn part1_solver(input: &[String], y: i32) -> usize {
     let sensors = input
         .iter()
         .map(|line| line.parse::<Sensor>().unwrap())
@@ -202,7 +202,7 @@ fn task1_solver(input: &[String], y: i32) -> usize {
     num_covered_points - beacons_on_same_line
 }
 
-fn task2_solver(input: &[String], max_x: i32, max_y: i32) -> Option<u64> {
+fn part2_solver(input: &[String], max_x: i32, max_y: i32) -> Option<u64> {
     let sensors = input
         .iter()
         .map(|line| line.parse::<Sensor>().unwrap())
@@ -236,12 +236,12 @@ fn task2_solver(input: &[String], max_x: i32, max_y: i32) -> Option<u64> {
     None
 }
 
-pub fn task1(input: &[String]) -> usize {
-    task1_solver(input, 2000000)
+pub fn part1(input: &[String]) -> usize {
+    part1_solver(input, 2000000)
 }
 
-pub fn task2(input: &[String]) -> u64 {
-    task2_solver(input, 4000000, 4000000).unwrap()
+pub fn part2(input: &[String]) -> u64 {
+    part2_solver(input, 4000000, 4000000).unwrap()
 }
 
 #[cfg(test)]
@@ -250,22 +250,22 @@ mod tests {
     use crate::util::read_input_from_file;
 
     #[test]
-    fn test_task1() {
+    fn test_part1() {
         assert_eq!(
-            task1_solver(&read_input_from_file("sample/day15.txt"), 10),
+            part1_solver(&read_input_from_file("sample/day15.txt"), 10),
             26
         );
-        assert_eq!(task1(&read_input_from_file("input/day15.txt")), 5525990);
+        assert_eq!(part1(&read_input_from_file("input/day15.txt")), 5525990);
     }
 
     #[test]
-    fn test_task2() {
+    fn test_part2() {
         assert_eq!(
-            task2_solver(&read_input_from_file("sample/day15.txt"), 20, 20).unwrap(),
+            part2_solver(&read_input_from_file("sample/day15.txt"), 20, 20).unwrap(),
             56000011
         );
         assert_eq!(
-            task2(&read_input_from_file("input/day15.txt")),
+            part2(&read_input_from_file("input/day15.txt")),
             11756174628223
         );
     }
