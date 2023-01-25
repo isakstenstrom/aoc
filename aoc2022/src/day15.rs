@@ -246,7 +246,7 @@ pub fn task2(input: &[String]) -> u64 {
 
 #[cfg(test)]
 mod tests {
-    use super::{task1, task1_solver, task2, task2_solver};
+    use super::*;
     use crate::util::read_input_from_file;
 
     #[test]

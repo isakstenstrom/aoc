@@ -266,7 +266,7 @@ pub fn task2(input: &[String]) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use super::{heuristic, task1, task2, Resources, SearchState};
+    use super::*;
     use crate::util::read_input_from_file;
 
     #[test]

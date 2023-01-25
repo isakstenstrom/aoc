@@ -35,7 +35,7 @@ pub fn task2(input: &[String]) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use super::{task1, task2};
+    use super::*;
     use crate::util::read_input_from_file;
 
     #[test]
