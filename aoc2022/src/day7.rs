@@ -13,7 +13,7 @@ fn create_file_table(lines: &[String]) -> HashMap<String, u32> {
             if line[5..] == ".."[..] {
                 path.pop();
             } else {
-                path.push(line[5..].to_string());
+                path.push(&line[5..]);
             }
         } else if !line.starts_with("$ ls") && !line.starts_with("dir") {
             let mut split_line = line.split(' ');

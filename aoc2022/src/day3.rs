@@ -12,8 +12,8 @@ pub fn part1(input: &[String]) -> u32 {
     input
         .iter()
         .map(|line| {
-            let h1: HashSet<char> = line[..(line.len() / 2)].chars().into_iter().collect();
-            let h2: HashSet<char> = line[(line.len() / 2)..].chars().into_iter().collect();
+            let h1: HashSet<char> = line[..(line.len() / 2)].chars().collect();
+            let h2: HashSet<char> = line[(line.len() / 2)..].chars().collect();
 
             h1.intersection(&h2).map(char_to_score).sum::<u32>()
         })
@@ -24,9 +24,9 @@ pub fn part2(input: &[String]) -> u32 {
     input
         .chunks(3)
         .map(|lines| {
-            let h1: HashSet<char> = lines[0].chars().into_iter().collect();
-            let h2: HashSet<char> = lines[1].chars().into_iter().collect();
-            let h3: HashSet<char> = lines[2].chars().into_iter().collect();
+            let h1: HashSet<char> = lines[0].chars().collect();
+            let h2: HashSet<char> = lines[1].chars().collect();
+            let h3: HashSet<char> = lines[2].chars().collect();
 
             h1.iter()
                 .filter(|c| h2.contains(c))

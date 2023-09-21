@@ -144,13 +144,9 @@ fn simulate_robot_production(blueprints: &[BlueprintCosts], num_minutes: usize) 
                 },
             });
 
-            while !stack.is_empty() {
-                let state = stack.pop().unwrap();
+            while let Some(state) = stack.pop() {
                 if state.time == 1 {
-                    max_score = cmp::max(
-                        max_score,
-                        state.resources.geode + state.production.geode as usize,
-                    );
+                    max_score = cmp::max(max_score, state.resources.geode + state.production.geode);
                     continue;
                 }
 

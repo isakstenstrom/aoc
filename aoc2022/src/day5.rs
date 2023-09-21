@@ -10,16 +10,11 @@ pub fn part1(input: &[String]) -> String {
         if line.chars().nth(1).unwrap() == '1' {
             break;
         }
-        line[1..]
-            .chars()
-            .into_iter()
-            .step_by(4)
-            .enumerate()
-            .for_each(|(i, c)| {
-                if c != ' ' {
-                    stacks[i].push_front(c);
-                }
-            })
+        line[1..].chars().step_by(4).enumerate().for_each(|(i, c)| {
+            if c != ' ' {
+                stacks[i].push_front(c);
+            }
+        })
     }
     index += 1;
 
@@ -48,16 +43,11 @@ pub fn part2(input: &[String]) -> String {
         if line.chars().nth(1).unwrap() == '1' {
             break;
         }
-        line[1..]
-            .chars()
-            .into_iter()
-            .step_by(4)
-            .enumerate()
-            .for_each(|(i, c)| {
-                if c != ' ' {
-                    stacks[i].push_front(c);
-                }
-            })
+        line[1..].chars().step_by(4).enumerate().for_each(|(i, c)| {
+            if c != ' ' {
+                stacks[i].push_front(c);
+            }
+        })
     }
     index += 1;
 
