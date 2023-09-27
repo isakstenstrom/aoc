@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, error::Error, str::FromStr};
+use std::{collections::VecDeque, str::FromStr};
 
 #[derive(Debug, Clone, Copy)]
 struct Cube {

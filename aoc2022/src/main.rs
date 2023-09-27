@@ -13,6 +13,7 @@ mod day18;
 mod day19;
 mod day2;
 mod day20;
+mod day21;
 mod day3;
 mod day4;
 mod day5;
@@ -120,6 +121,7 @@ fn main() {
     run_day!(18, run_all, day, part, use_sample_input);
     run_day!(19, run_all, day, part, use_sample_input);
     run_day!(20, run_all, day, part, use_sample_input);
+    run_day!(21, run_all, day, part, use_sample_input);
 
     if run_all {
         println!("Total time elapsed: {:?}", total_time.elapsed());
