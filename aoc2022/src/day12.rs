@@ -60,7 +60,7 @@ impl HeightMap {
             }
 
             visited.insert(node);
-            for neighbor in node.get_neighbors() {
+            for neighbor in node.get_manhattan_neighbors() {
                 if neighbor.is_within(
                     0,
                     0,

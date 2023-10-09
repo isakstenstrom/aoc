@@ -2,7 +2,7 @@ use std::{
     cmp,
     fs::File,
     io::{self, BufRead},
-    ops::{Add, AddAssign, Mul, Sub},
+    ops::{Add, AddAssign, Mul, Sub, SubAssign},
     str::FromStr,
 };
 
@@ -41,6 +41,32 @@ where
         *self = Self {
             x: self.x + other.x,
             y: self.y + other.y,
+        };
+    }
+}
+
+impl<T> Sub for Point<T>
+where
+    T: Sub<Output = T>,
+{
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        }
+    }
+}
+
+impl<T> SubAssign for Point<T>
+where
+    T: Sub<Output = T> + Copy,
+{
+    fn sub_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
         };
     }
 }
@@ -104,12 +130,26 @@ where
     T: Add<Output = T> + Sub<Output = T> + num::One + Copy,
 {
     #[rustfmt::skip]
-    pub fn get_neighbors(&self) -> [Self; 4] {
+    pub fn get_manhattan_neighbors(&self) -> [Self; 4] {
         [
             Self {x: self.x             , y: self.y - One::one()},
             Self {x: self.x - One::one(), y: self.y             },
             Self {x: self.x             , y: self.y + One::one()},
             Self {x: self.x + One::one(), y: self.y             },
+        ]
+    }
+
+    #[rustfmt::skip]
+    pub fn get_neighbors(&self) -> [Self; 8] {
+        [
+            Self {x: self.x - One::one(), y: self.y - One::one()},
+            Self {x: self.x             , y: self.y - One::one()},
+            Self {x: self.x + One::one(), y: self.y - One::one()},
+            Self {x: self.x - One::one(), y: self.y             },
+            Self {x: self.x + One::one(), y: self.y             },
+            Self {x: self.x - One::one(), y: self.y + One::one()},
+            Self {x: self.x             , y: self.y + One::one()},
+            Self {x: self.x + One::one(), y: self.y + One::one()},
         ]
     }
 }
