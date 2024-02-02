@@ -6,9 +6,21 @@ public interface ISolver
 
 public class Runner
 {
-    public static List<string> GetPuzzleInput(int day, bool getSample)
+    public static List<string> GetPuzzleInput(int day, int part, bool useSampleInput)
     {
-        string fileName = getSample ? $"aoc2023/res/sample/day{day}.txt" : $"aoc2023/res/input/day{day}.txt";
+        string fileName = String.Format(
+            "aoc2023/res/{0}/day{1}_part{2}.txt",
+            useSampleInput ? "sample" : "input",
+            day,
+            part);
+
+        if (!File.Exists(fileName))
+        {
+            fileName = String.Format(
+                "aoc2023/res/{0}/day{1}.txt",
+                useSampleInput ? "sample" : "input",
+                day);
+        }
         var fileLines = File.ReadAllLines(fileName);
         return new List<string>(fileLines);
     }
@@ -49,10 +61,11 @@ public class Runner
             return;
         }
 
-        List<string> input = GetPuzzleInput(day, useSampleInput);
+        List<string> input;
 
         if (solvePart == 1 || solvePart == -1)
         {
+            input = GetPuzzleInput(day, 1, useSampleInput);
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             string result = solver.Part1(input);
@@ -64,6 +77,7 @@ public class Runner
 
         if (solvePart == 2 || solvePart == -1)
         {
+            input = GetPuzzleInput(day, 2, useSampleInput);
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             string result = solver.Part2(input);
