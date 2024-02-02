@@ -6,16 +6,10 @@ public enum Direction
     West,
 };
 
-public struct LongPoint
+public struct LongPoint(long x, long y)
 {
-    public LongPoint(long x, long y)
-    {
-        X = x;
-        Y = y;
-    }
-
-    public long X { get; }
-    public long Y { get; }
+    public long X { get; } = x;
+    public long Y { get; } = y;
 
 
     public override bool Equals(object? obj) => Equals(obj as Nullable<LongPoint>);
