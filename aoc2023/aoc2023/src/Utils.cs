@@ -68,6 +68,20 @@ public struct LongPoint(long x, long y)
         return !(p1 == p2);
     }
 
+    public static LongPoint operator +(LongPoint a) => a;
+
+    public static LongPoint operator -(LongPoint a) => new LongPoint(-a.X, -a.Y);
+
+    public static LongPoint operator +(LongPoint a, LongPoint b)
+        => new LongPoint(a.X + b.X, a.Y + b.Y);
+
+    public static LongPoint operator -(LongPoint a, LongPoint b)
+        => a + (-b);
+
+    public static LongPoint operator *(LongPoint a, long b)
+        => new LongPoint(a.X * b, a.Y * b);
+
+
     public LongPoint? Intersection(LongPoint other)
     {
         long low = Math.Max(X, other.X);
