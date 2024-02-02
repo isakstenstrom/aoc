@@ -103,6 +103,7 @@ public class Runner
         SolveDay(7, new Day7Solver(), solveDay, solvePart, useSampleInput, alternateInput);
         SolveDay(8, new Day8Solver(), solveDay, solvePart, useSampleInput, alternateInput);
         SolveDay(9, new Day9Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(11, new Day11Solver(), solveDay, solvePart, useSampleInput, alternateInput);
 
         var elapsedTime = FormatDuration(watch.Elapsed);
 
