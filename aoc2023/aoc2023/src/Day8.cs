@@ -2,32 +2,6 @@ using System.Text.RegularExpressions;
 
 public class Day8Solver : ISolver
 {
-    static long LCM(List<long> numbers)
-    {
-        long result = numbers[0];
-        for (int i = 1; i < numbers.Count; i++)
-        {
-            result = LCM(result, numbers[i]);
-        }
-        return result;
-    }
-
-    static long LCM(long a, long b)
-    {
-        return a * b / GCD(a, b);
-    }
-
-    static long GCD(long a, long b)
-    {
-        while (b != 0)
-        {
-            long temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
-
     public long Solve(List<string> input, Regex startPattern, Regex endPattern)
     {
         List<int> directions = input[0].ToCharArray().Select(c => c == 'L' ? 0 : 1).ToList();
@@ -52,7 +26,7 @@ public class Day8Solver : ISolver
             }
             iterationLengths.Add(numIterations);
         }
-        return LCM(iterationLengths);
+        return MathUtils.LCM(iterationLengths);
     }
 
     public string Part1(List<string> input)

@@ -139,3 +139,31 @@ public struct LongPoint(long x, long y)
     public override string ToString() => $"({X}, {Y})";
 }
 
+public class MathUtils
+{
+    public static long LCM(List<long> numbers)
+    {
+        long result = numbers[0];
+        for (int i = 1; i < numbers.Count; i++)
+        {
+            result = LCM(result, numbers[i]);
+        }
+        return result;
+    }
+
+    public static long LCM(long a, long b)
+    {
+        return a * b / GCD(a, b);
+    }
+
+    public static long GCD(long a, long b)
+    {
+        while (b != 0)
+        {
+            long temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+}
