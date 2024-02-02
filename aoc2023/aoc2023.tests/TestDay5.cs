@@ -2,14 +2,8 @@ using Xunit;
 
 public class TestDay5Solver
 {
-    private readonly int _day;
-    private readonly ISolver _solver;
-
-    public TestDay5Solver()
-    {
-        _day = 5;
-        _solver = new Day5Solver();
-    }
+    private readonly int _day = 5;
+    private readonly ISolver _solver = new Day5Solver();
 
     [Fact]
     public void TestLongPointIntersection()
@@ -35,7 +29,6 @@ public class TestDay5Solver
         Assert.Equal((new LongPoint(4, 5), null), new LongPoint(4, 8).Difference(new LongPoint(6, 10)));
         Assert.Equal((new LongPoint(4, 7), null), new LongPoint(4, 8).Difference(new LongPoint(8, 10)));
         Assert.Equal((new LongPoint(4, 8), null), new LongPoint(4, 8).Difference(new LongPoint(10, 12)));
-
     }
 
     [Fact]
@@ -44,7 +37,6 @@ public class TestDay5Solver
         Assert.Equal("35", _solver.Part1(Runner.GetPuzzleInput(_day, 1, true)));
         Assert.Equal("251346198", _solver.Part1(Runner.GetPuzzleInput(_day, 1, false)));
     }
-
 
     [Fact]
     public void TestPart2()

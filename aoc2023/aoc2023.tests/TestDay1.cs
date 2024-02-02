@@ -2,14 +2,8 @@ using Xunit;
 
 public class TestDay1Solver
 {
-    private readonly int _day;
-    private readonly ISolver _solver;
-
-    public TestDay1Solver()
-    {
-        _day = 1;
-        _solver = new Day1Solver();
-    }
+    private readonly int _day = 1;
+    private readonly ISolver _solver = new Day1Solver();
 
     [Fact]
     public void TestPart1()
@@ -17,7 +11,6 @@ public class TestDay1Solver
         Assert.Equal("142", _solver.Part1(Runner.GetPuzzleInput(_day, 1, true)));
         Assert.Equal("55447", _solver.Part1(Runner.GetPuzzleInput(_day, 1, false)));
     }
-
 
     [Fact]
     public void TestPart2()
