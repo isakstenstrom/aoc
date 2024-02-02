@@ -84,7 +84,7 @@ public class Runner
 
             watch.Stop();
             var elapsedTime = FormatDuration(watch.Elapsed);
-            Console.WriteLine($"Day {day,2}: part 1: {result,16}, in {elapsedTime}");
+            Console.WriteLine($"Day {day,2}: part 2: {result,16}, in {elapsedTime}");
         }
     }
 
@@ -96,6 +96,7 @@ public class Runner
         SolveDay(2, new Day2Solver(), solveDay, solvePart, useSampleInput);
         SolveDay(3, new Day3Solver(), solveDay, solvePart, useSampleInput);
         SolveDay(4, new Day4Solver(), solveDay, solvePart, useSampleInput);
+        SolveDay(5, new Day5Solver(), solveDay, solvePart, useSampleInput);
         SolveDay(6, new Day6Solver(), solveDay, solvePart, useSampleInput);
 
         var elapsedTime = FormatDuration(watch.Elapsed);
