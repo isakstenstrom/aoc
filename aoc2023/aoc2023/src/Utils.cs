@@ -6,6 +6,33 @@ public enum Direction
     West,
 };
 
+public static class DirectionExtensions
+{
+    public static Direction RotateLeft(this Direction direction)
+    {
+        return direction switch
+        {
+            Direction.North => Direction.West,
+            Direction.East => Direction.North,
+            Direction.South => Direction.East,
+            Direction.West => Direction.South,
+            _ => throw new ArgumentException("Invalid direction"),
+        };
+    }
+
+    public static Direction RotateRight(this Direction direction)
+    {
+        return direction switch
+        {
+            Direction.North => Direction.East,
+            Direction.East => Direction.South,
+            Direction.South => Direction.West,
+            Direction.West => Direction.North,
+            _ => throw new ArgumentException("Invalid direction"),
+        };
+    }
+}
+
 public struct LongPoint(long x, long y)
 {
     public long X { get; } = x;
@@ -85,6 +112,14 @@ public struct LongPoint(long x, long y)
             Direction.West => new LongPoint(X - 1, Y),
             _ => throw new ArgumentException("Invalid direction"),
         };
+    }
+
+    public IEnumerable<LongPoint> Neighbors()
+    {
+        yield return Step(Direction.North);
+        yield return Step(Direction.East);
+        yield return Step(Direction.South);
+        yield return Step(Direction.West);
     }
 
     public override string ToString() => $"({X}, {Y})";
