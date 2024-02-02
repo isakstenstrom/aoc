@@ -66,12 +66,41 @@ public class Program
             getDefaultValue: () => false
         );
 
+        var useAlternateInputOption = new Option<int?>(
+            aliases: ["-a", "--alternateInput"],
+            description: "Specify alternate input to use.",
+            isDefault: true,
+            parseArgument: result =>
+            {
+                int? value = null;
+                if (result.Tokens.Count == 0)
+                {
+                    return value;
+                }
+
+                try
+                {
+                    value = int.Parse(result.Tokens.Single().Value);
+                    if (value < 0)
+                    {
+                        throw new FormatException();
+                    }
+                }
+                catch (FormatException)
+                {
+                    result.ErrorMessage = $"Invalid input: \"{result.Tokens.Single().Value}\". Must an positive integer";
+                }
+                return value;
+            }
+        );
+
         var rootCommand = new RootCommand("Solutions to Advent of Code 2023");
         rootCommand.AddGlobalOption(dayOption);
         rootCommand.AddGlobalOption(partOption);
         rootCommand.AddGlobalOption(useSampleInputOption);
+        rootCommand.AddGlobalOption(useAlternateInputOption);
 
-        rootCommand.SetHandler(Runner.Solve, dayOption, partOption, useSampleInputOption);
+        rootCommand.SetHandler(Runner.Solve, dayOption, partOption, useSampleInputOption, useAlternateInputOption);
 
         rootCommand.Invoke(args);
     }

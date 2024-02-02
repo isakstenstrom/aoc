@@ -6,20 +6,22 @@ public interface ISolver
 
 public class Runner
 {
-    public static List<string> GetPuzzleInput(int day, int part, bool useSampleInput)
+    static string GetFilePath(int day, int? part, bool useSampleInput, int? alternateVersion = null)
     {
-        string fileName = String.Format(
-            "aoc2023/res/{0}/day{1}_part{2}.txt",
+        return string.Format(
+            "aoc2023/res/{0}/day{1}{2}{3}.txt",
             useSampleInput ? "sample" : "input",
             day,
-            part);
+            part is not null ? $"_part{part.Value}" : "",
+            alternateVersion is not null ? $"_alt{alternateVersion.Value}" : "");
+    }
 
+    public static List<string> GetPuzzleInput(int day, int part, bool useSampleInput, int? alternateVersion = null)
+    {
+        string fileName = GetFilePath(day, part, useSampleInput, alternateVersion);
         if (!File.Exists(fileName))
         {
-            fileName = String.Format(
-                "aoc2023/res/{0}/day{1}.txt",
-                useSampleInput ? "sample" : "input",
-                day);
+            fileName = GetFilePath(day, null, useSampleInput, alternateVersion);
         }
         var fileLines = File.ReadAllLines(fileName);
         return new List<string>(fileLines);
@@ -54,7 +56,7 @@ public class Runner
         return $"{duration.TotalNanoseconds:N2} ns";
     }
 
-    public static void SolveDay(int day, ISolver solver, int solveDay, int solvePart, bool useSampleInput)
+    public static void SolveDay(int day, ISolver solver, int solveDay, int solvePart, bool useSampleInput, int? alternateInput)
     {
         if (day != solveDay && solveDay != -1)
         {
@@ -65,7 +67,7 @@ public class Runner
 
         if (solvePart == 1 || solvePart == -1)
         {
-            input = GetPuzzleInput(day, 1, useSampleInput);
+            input = GetPuzzleInput(day, 1, useSampleInput, alternateInput);
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             string result = solver.Part1(input);
@@ -77,7 +79,7 @@ public class Runner
 
         if (solvePart == 2 || solvePart == -1)
         {
-            input = GetPuzzleInput(day, 2, useSampleInput);
+            input = GetPuzzleInput(day, 2, useSampleInput, alternateInput);
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             string result = solver.Part2(input);
@@ -88,18 +90,18 @@ public class Runner
         }
     }
 
-    public static void Solve(int solveDay, int solvePart, bool useSampleInput)
+    public static void Solve(int solveDay, int solvePart, bool useSampleInput, int? alternateInput)
     {
         var watch = System.Diagnostics.Stopwatch.StartNew();
 
-        SolveDay(1, new Day1Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(2, new Day2Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(3, new Day3Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(4, new Day4Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(5, new Day5Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(6, new Day6Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(7, new Day7Solver(), solveDay, solvePart, useSampleInput);
-        SolveDay(8, new Day8Solver(), solveDay, solvePart, useSampleInput);
+        SolveDay(1, new Day1Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(2, new Day2Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(3, new Day3Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(4, new Day4Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(5, new Day5Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(6, new Day6Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(7, new Day7Solver(), solveDay, solvePart, useSampleInput, alternateInput);
+        SolveDay(8, new Day8Solver(), solveDay, solvePart, useSampleInput, alternateInput);
 
         var elapsedTime = FormatDuration(watch.Elapsed);
 

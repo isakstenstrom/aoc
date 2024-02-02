@@ -15,6 +15,7 @@ public class TestDay8Solver
     public void TestPart1()
     {
         Assert.Equal("2", _solver.Part1(Runner.GetPuzzleInput(_day, 1, true)));
+        Assert.Equal("6", _solver.Part1(Runner.GetPuzzleInput(_day, 1, true, 1)));
         Assert.Equal("18673", _solver.Part1(Runner.GetPuzzleInput(_day, 1, false)));
     }
 
